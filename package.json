@@ -1,0 +1,25 @@
+{
+  "name": "cm2020-todo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "compile": "./node_modules/.bin/babel src --out-dir public/dist",
+    "compile-watch": "./node_modules/.bin/babel src --out-dir public/dist --watch",
+    "build": "webpack --mode=development",
+    "server": "webpack serve --mode=development"
+  },
+  "author": "",
+  "dependencies": {
+    "@babel/cli": "^7.24.8",
+    "@babel/core": "^7.24.8",
+    "@babel/preset-env": "^7.24.8",
+    "@babel/preset-react": "^7.24.7",
+    "babel-loader": "^9.1.3",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "webpack": "^5.93.0",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^5.0.4"
+  }
+}
