@@ -16,7 +16,7 @@ The application should be accessible on http://localhost:9000/
 
 # File structure
 
-`public/` - static files such as HTML and CSS.
-`src/` - JavaScript source code for the application.
-`webpack.config.js` - configuration for the Webpack code bundler and dev web server.
+`public/` - static files such as HTML and CSS. \
+`src/` - JavaScript source code for the application. \
+`webpack.config.js` - configuration for the Webpack code bundler and dev web server. \
 `babel.config.json` - Configuration for the Babel.js compiler.

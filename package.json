@@ -4,9 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "compile": "./node_modules/.bin/babel src --out-dir public/dist",
-    "compile-watch": "./node_modules/.bin/babel src --out-dir public/dist --watch",
     "build": "webpack --mode=development",
+    "build-release": "webpack --mode=production",
     "server": "webpack serve --mode=development"
   },
   "author": "",
