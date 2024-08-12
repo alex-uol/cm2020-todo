@@ -19,7 +19,7 @@ The application should be accessible on http://localhost:9000/
 Every commit to the main branch is automatically deployed through GitHub Actions. \
 The latest app version can be seen here:
 
-http://alex-uol.github.io/agile-todo/
+https://alex-uol.github.io/todo-app/
 
 # File structure
 
