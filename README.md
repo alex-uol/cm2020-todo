@@ -14,6 +14,13 @@ npm run server
 
 The application should be accessible on http://localhost:9000/
 
+# Demo deployment
+
+Every commit to the main branch is automatically deployed through GitHub Actions. \
+The latest app version can be seen here:
+
+http://alex-uol.github.io/agile-todo/
+
 # File structure
 
 `public/` - static files such as HTML and CSS. \
