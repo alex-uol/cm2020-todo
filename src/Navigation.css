@@ -1,0 +1,35 @@
+.navigation-container {
+    width: 250px;
+    background-color: #f4f4f4;
+    padding: 20px;
+    box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.1);
+}
+
+.navigation-header {
+    font-size: 1.5em;
+    margin-bottom: 20px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.navigation-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.navigation-item {
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    transition: background-color 0.3s;
+}
+
+    .navigation-item:hover {
+        background-color: #ddd;
+    }
+
+    .navigation-item.active {
+        background-color: #007bff;
+        color: white;
+    }
