@@ -1,7 +1,83 @@
-body {
-    font-family: system-ui, -apple-system;
+.app {
+    display: flex;
+    height: 100vh;
+}
+  
+.navbar {
+    width: 200px;
+    background-color: #333;
+    color: white;
+    padding: 15px;
+}
+  
+.navbar ul {
+    list-style-type: none;
+    padding: 0;
+}
+  
+.navbar ul li {
+    margin: 15px 0;
+    cursor: pointer;
+}
+  
+.navbar ul li:hover {
+    text-decoration: underline;
+}
+  
+.main-content {
+    flex-grow: 1;
+    padding: 20px;
+}
+  
+.task-list ul {
+    list-style-type: none;
+    padding: 0;
+}
+  
+.task-list li {
+	padding: 10px;
+	margin-bottom: 10px;
+	border: 1px solid #ddd;
+	border-radius: 5px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+  
+.task-list li.overdue {
+    background-color: #ffcccc;
+}
+  
+.task-list li.active {
+	background-color: #e6ffe6;
 }
 
-h1 {
-    text-align: center;
+.task-list li.trashed {
+	background-color: #888888;
+}
+  
+.task-detail-form {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.task-detail-form input, .task-detail-form textarea {
+	width: 100%;
+	margin: 10px 0;
+	padding: 10px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+}
+
+button {
+	padding: 10px 20px;
+	background-color: #007BFF;
+	color: white;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+}
+
+button:hover {
+	background-color: #0056b3;
 }
