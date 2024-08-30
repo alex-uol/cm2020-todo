@@ -6,6 +6,8 @@ function NavBar({ setContext }) {
       <ul>
         <li onClick={() => setContext('list')}>All Tasks</li>
         <li onClick={() => setContext('create')}>Create Task</li>
+        <li className="divider"></li>
+        <li onClick={() => setContext("dataManagement")}>Export / Import</li>
       </ul>
     </nav>
   );
