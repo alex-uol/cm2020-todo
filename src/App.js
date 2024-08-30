@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import NavBar from './NavBar';
 import TaskList from './TaskList';
 import TaskDetailForm from './TaskDetailForm';
+import DataManagement from './DataManagement'
 
 function App() {
   const [tasks, setTasks] = useState([]);
@@ -10,9 +11,13 @@ function App() {
   const [filterStatus, setFilterStatus] = useState('all');
 
   useEffect(() => {
+    loadData()
+  }, []);
+
+  const loadData = () => {
     const savedTasks = JSON.parse(localStorage.getItem('tasks')) || [];
     setTasks(savedTasks);
-  }, []);
+  }
 
   const saveTasks = (tasks) => {
     localStorage.setItem('tasks', JSON.stringify(tasks));
@@ -92,6 +97,7 @@ function App() {
             }}
           />
         )}
+        {context === "dataManagement" && <DataManagement onImport={loadData} />}
       </div>
     </div>
   );

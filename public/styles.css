@@ -1,7 +1,22 @@
+/* App */
+
+body, html {
+	padding: 0;
+	margin: 0;
+	font-family: system-ui, -apple-system;
+}
+
 .app {
     display: flex;
     height: 100vh;
 }
+ 
+.main-content {
+    flex-grow: 1;
+    padding: 20px;
+}
+
+/* Navbar */
   
 .navbar {
     width: 200px;
@@ -23,11 +38,51 @@
 .navbar ul li:hover {
     text-decoration: underline;
 }
-  
-.main-content {
-    flex-grow: 1;
-    padding: 20px;
+
+.navbar .divider {
+	height: 1px;
+	background-color: gray;
 }
+
+
+/* Buttons */
+
+button {
+	padding: 10px 20px;
+	background-color: #007BFF;
+	color: white;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+}
+
+button:hover {
+	background-color: #0056b3;
+}
+
+/* Labels */
+
+.warning, .success, .error {
+	border-radius: 1rem;
+	padding: 0.2rem 0.5rem;
+	display: inline-block;
+	margin: 1rem 0;
+}
+
+.warning {
+	background-color: orange;
+}
+
+.success {
+	background-color: lightgreen;
+}
+
+.error {
+	background-color: red;
+	color: white;
+}
+
+/* Tasks */
   
 .task-list ul {
     list-style-type: none;
@@ -69,15 +124,8 @@
 	border-radius: 5px;
 }
 
-button {
-	padding: 10px 20px;
-	background-color: #007BFF;
-	color: white;
-	border: none;
-	border-radius: 5px;
-	cursor: pointer;
-}
+/* Data Management */
 
-button:hover {
-	background-color: #0056b3;
+#data-management section {
+	margin-top: 3rem;
 }
