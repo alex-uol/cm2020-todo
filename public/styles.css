@@ -9,6 +9,7 @@ body, html {
 .app {
     display: flex;
     height: 100vh;
+	overflow: hidden;
 }
  
 .main-content {
@@ -38,6 +39,13 @@ body, html {
 .navbar ul li:hover {
     text-decoration: underline;
 }
+
+  
+.main-content {
+    flex-grow: 1;
+    padding: 20px;
+	height: 100vh;
+	overflow: auto;
 
 .navbar .divider {
 	height: 1px;
@@ -111,21 +119,213 @@ button:hover {
 	background-color: #888888;
 }
   
+.tasklist-tags-container
+{
+	display: block;
+	align-items: start;
+	height: max-content;
+}
+
 .task-detail-form {
     max-width: 600px;
     margin: 0 auto;
+	padding-bottom: 20px;
 }
 
-.task-detail-form input, .task-detail-form textarea {
+.task-detail-form .full-width-input {
 	width: 100%;
-	margin: 10px 0;
+	margin-bottom: 10px;
 	padding: 10px;
 	border: 1px solid #ccc;
 	border-radius: 5px;
 }
 
+
+.task-detail-form p, strong
+{
+	padding: 0;
+	margin: 0;
+	margin-bottom: 10px;
+}
+
+.category-et-tags-container
+{
+	display: grid;
+	grid-column: 100%;
+}
+
+.category-et-tags-container div
+{
+
+}
+
+.category-et-tags-container div select
+{
+	margin: 0;
+}
+
+/* Category Manager ---- ---- ---- ---- ---- ---- ---- ----*/
+
+.header-container
+{
+	display: grid;
+	grid-template-columns: auto auto auto auto;
+	align-items: center;
+}
+
+.search-box
+{
+	display: grid;
+	grid-template-columns: auto min-content;
+	align-items: center;
+}
+
+.category-list-item
+{
+	margin-top: 5px;
+	margin-left: 5px;
+	display: grid;
+	grid-gap: 10px;
+	width: 100%;
+	grid-template-columns: min-content auto min-content min-content;
+}
+
+.category-list-item div
+{
+	display: flex;
+	align-items: center;
+}
+
+.category-list-item input
+{
+	height: 100%;
+}
+
+/* Tag Manager ---- ---- ---- ---- ---- ---- ---- ----*/
+
+.tags-container
+{
+	display: flex;
+	align-items: center;
+	gap: 5px;
+	min-height: 2vw;
+	margin-bottom: 10px;
+}
+
+.tags-container div
+{
+	margin: 5px;
+	display: grid;
+	align-items: center;
+}
+
+.tags-container button
+{
+	width: 2vw;
+	height: 2vw;
+	padding: 0;
+	margin: 5px;
+}
+
+.tag-container div
+{
+	border-radius: 5px;
+	padding-left: 3px;
+	padding-right: 3px;
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.tag-container
+{
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	margin: 5px;
+	display: grid;
+	grid-template-columns: min-content auto min-content;
+	vertical-align: middle;
+	align-items: center;
+}
+
+.tag-container select
+{
+	width: fit-content;
+	height: 2vw;
+	margin: 0 0 0 5px;
+}
+
+.tag-colour-block
+{
+	min-width: 20px;
+	width: 2vw;
+	height: 2vw;
+	border-radius: 5px;
+}
+
+.category-container
+{
+	display: inline-flex;
+	vertical-align: middle;
+	align-items: center;
+	margin-bottom: 10px;
+}
+
+.category-container select
+{
+	margin: 0 0 0 5px;
+	width: fit-content;
+}
+
+.delete
+{
+	background-color: red;
+}
+
+.delete:hover
+{
+	background-color: darkred;
+}
+
+
+
+/* General ---- ---- ---- ---- ---- ---- ---- ----*/
+
+body 
+{
+	margin: 0;
+	padding: 0;
+}
+
+button {
+	padding: 10px 20px;
+	background-color: #007BFF;
+	color: white;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+}
+
+button:hover {
+	background-color: #0056b3;
+}
+
+select
+{
+	width: 50%;
+	margin-bottom: 10px;
+	padding: 10px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+}
+
+input {
+	padding: 10px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+}
 /* Data Management */
 
 #data-management section {
 	margin-top: 3rem;
 }
+
