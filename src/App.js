@@ -2,10 +2,14 @@ import React, { useState, useEffect } from 'react';
 import NavBar from './NavBar';
 import TaskList from './TaskList';
 import TaskDetailForm from './TaskDetailForm';
+
 import { CategoryManager } from './CategoryManager';
 import { Status, Task } from './Task';
 import { Category, Tag } from './Category';
 import { TagManager } from './TagManager.js';
+
+import DataManagement from './DataManagement'
+
 
 function App() {
   const [tasks, setTasks] = useState([]);
@@ -16,13 +20,18 @@ function App() {
   const [tags, setTags] = useState([]);
 
   useEffect(() => {
+    loadData()
+  }, []);
+
+  const loadData = () => {
     const savedTasks = JSON.parse(localStorage.getItem('tasks')) || [];
     setTasks(savedTasks);
     const savedCategories = JSON.parse(localStorage.getItem('categories')) || [];
     setCategories(savedCategories);
     const savedTags = JSON.parse(localStorage.getItem('tags')) || [];
     setTags(savedTags);
-  }, []);
+  };
+
 
   const saveTasks = (tasks) => {
     localStorage.setItem('tasks', JSON.stringify(tasks));
@@ -222,6 +231,7 @@ function App() {
             deleteTag={deleteTag}
           />
         )}
+        {context === "dataManagement" && <DataManagement onImport={loadData} />}
       </div>
     </div>
   );
