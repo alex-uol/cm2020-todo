@@ -1,6 +1,7 @@
 import React, { useState }  from 'react';
 import { Status, Task } from './Task';
 import { Category, Tag } from './Category';
+import { useNavigate } from "react-router-dom";
 
 /**
  * @param {Object} param0 
@@ -19,7 +20,8 @@ import { Category, Tag } from './Category';
 function TaskList({ tasks, selectTask, moveToTrash, markComplete, restoreTask, deleteTaskPermanently, filterStatus, setFilterStatus, categories, tags }) {
   const [searchValue, setSearchValue] = useState("");
   const [isSearching, setIsSeaching] = useState(false);
- 
+  const navigate = useNavigate();
+
   /**now time for comparing with due date of tasks*/
   const today = new Date().toISOString().split('T')[0];
 
@@ -53,6 +55,8 @@ function TaskList({ tasks, selectTask, moveToTrash, markComplete, restoreTask, d
   });
 
   const heading = filterStatus === 'all' ? 'All Tasks' : filterStatus + ' Tasks';
+
+
 
   /**
    * @param {Task} task 
@@ -89,9 +93,18 @@ function TaskList({ tasks, selectTask, moveToTrash, markComplete, restoreTask, d
       return jsx;
     }
 
+    const redirectToTask = () =>
+    {
+      if (task.status !== Status.trashed)
+      {
+        selectTask(task.id);
+        navigate("/task");
+      }
+    }
+
     return (
     <li className={getClassName()} key={task.id}>
-      <div onClick={() => task.status !== Status.trashed && selectTask(task.id)}>
+      <div onClick={redirectToTask}>
         <strong>{task.title}</strong> - {task.description}
         <div>Priority: {task.priority}</div>
         <div>Due Date: {task.dueDate ? task.dueDate : "Not yet set"} {task.dueDate ? (calculateRemainingTime(task.dueDate)) : ""}</div>

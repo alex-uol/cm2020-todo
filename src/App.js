@@ -7,13 +7,15 @@ import { CategoryManager } from './CategoryManager';
 import { Status, Task } from './Task';
 import { Category, Tag } from './Category';
 import { TagManager } from './TagManager.js';
-
 import DataManagement from './DataManagement'
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Layout } from './Layout.js';
 
 
 function App() {
   const [tasks, setTasks] = useState([]);
   const [selectedTaskId, setSelectedTaskId] = useState(null);
+  /**@deprecated use useNavigate to navigate to another page*/
   const [context, setContext] = useState('list');
   const [filterStatus, setFilterStatus] = useState('all');
   const [categories, setCategories] = useState([]);
@@ -46,12 +48,12 @@ function App() {
       cat = {...cat, tasks: [...cat.tasks, task.id]};
       updateCategory(cat);
     }
-    setContext('list');
+    //setContext('list');
   };
 
   const selectTask = (id) => {
     setSelectedTaskId(id);
-    setContext('detail');
+    //setContext('detail');
   };
 
   const saveTask = (updatedTask) => {
@@ -181,59 +183,56 @@ function App() {
   }
 
   return (
-    <div className="app">
-      <NavBar setContext={setContext} />
-      <div className="main-content">
-        {context === 'list' && (
-          <TaskList 
-            tasks={tasks} 
-            selectTask={selectTask} 
-            moveToTrash={moveToTrash} 
-            markComplete={markComplete} 
-            restoreTask={restoreTask} 
-            deleteTaskPermanently={deleteTaskPermanently} 
-            filterStatus={filterStatus} 
-            setFilterStatus={setFilterStatus} 
-            categories={categories}
-            tags={tags}
-          />
-        )}
-        {(context === 'create' || (context === 'detail' && selectedTask)) && (
-          <TaskDetailForm
-            task={context === 'create' ? null : selectedTask}
-            addTask={addTask}
-            saveTask={saveTask}
-            markComplete={markComplete}
-            goBack={(hasChanges) => {
-              if (hasChanges) {
-                alert('Please save changes before leaving.');
-              } else {
-                setContext('list');
-              }
-            }}
-            categories={categories}
-            tags={tags}
-          />
-        )}
-        {context === 'categorieManager' && (
-          <CategoryManager 
-            categories={categories} 
-            updateCategory={updateCategory} 
-            createCategory={createCategory}
-            deleteCategory={deleteCategory}
-          />
-        )}
-        {context === 'tagManager' && (
-          <TagManager 
-            tags={tags} 
-            updateTag={updateTag} 
-            createTag={createTag}
-            deleteTag={deleteTag}
-          />
-        )}
-        {context === "dataManagement" && <DataManagement onImport={loadData} />}
-      </div>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Layout/>}>
+          <Route index element={
+            <TaskList 
+              tasks={tasks} 
+              selectTask={selectTask} 
+              moveToTrash={moveToTrash} 
+              markComplete={markComplete} 
+              restoreTask={restoreTask} 
+              deleteTaskPermanently={deleteTaskPermanently} 
+              filterStatus={filterStatus} 
+              setFilterStatus={setFilterStatus} 
+              categories={categories}
+              tags={tags}
+            />
+          }/>
+          <Route path="/task" element={
+            <TaskDetailForm
+              task={selectedTask? selectedTask : null /*context === 'create' ? null : selectedTask*/}
+              addTask={addTask}
+              saveTask={saveTask}
+              markComplete={markComplete}
+              categories={categories}
+              tags={tags}
+              setSelectedTaskId={setSelectedTaskId}
+            />
+          }/>
+          <Route path="/categorieManager" element={
+            <CategoryManager 
+              categories={categories} 
+              updateCategory={updateCategory} 
+              createCategory={createCategory}
+              deleteCategory={deleteCategory}
+            />
+          }/>
+          <Route path="/tagManager" element={
+            <TagManager 
+              tags={tags} 
+              updateTag={updateTag} 
+              createTag={createTag}
+              deleteTag={deleteTag}
+            />
+          }/>
+          <Route path="/dataManagement" element={
+            <DataManagement onImport={loadData} />
+          }/>
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
 

@@ -35,17 +35,22 @@ body, html {
     margin: 15px 0;
     cursor: pointer;
 }
+
+.navbar ul li a {
+	text-decoration: none;
+	color: white;
+}
   
-.navbar ul li:hover {
+.navbar ul li a:hover {
     text-decoration: underline;
 }
 
-  
 .main-content {
     flex-grow: 1;
     padding: 20px;
 	height: 100vh;
 	overflow: auto;
+}
 
 .navbar .divider {
 	height: 1px;
@@ -152,11 +157,6 @@ button:hover {
 {
 	display: grid;
 	grid-column: 100%;
-}
-
-.category-et-tags-container div
-{
-
 }
 
 .category-et-tags-container div select

@@ -1,5 +1,11 @@
 import React from 'react';
 
+/** NavBar is replaced by Layout in order to add routing feature
+ * @deprecated
+ * @param {object} param0 
+ * @param {string} param0.setContext
+ * @returns {React.JSX.Element}
+ */
 function NavBar({ setContext }) {
   return (
     <nav className="navbar">
