@@ -34,7 +34,7 @@ export class Tag
         /**hexadecimal value of colour of tag 
          * @type {string}
         */
-        this.colour = "#000000";
+        this.colour = "#aaaaaa";
         /** list of id of tasks with this tag
          * @type {number[]}
          */

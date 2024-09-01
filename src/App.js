@@ -6,16 +6,16 @@ import TaskDetailForm from './TaskDetailForm';
 import { CategoryManager } from './CategoryManager';
 import { Status, Task } from './Task';
 import { Category, Tag } from './Category';
-import { TagManager } from './TagManager.js';
+import { TagManager } from './TagManager';
 
-import DataManagement from './DataManagement'
+import DataManagement from './DataManagement';
+import ResetApp from './ResetApp';
 
 
 function App() {
   const [tasks, setTasks] = useState([]);
   const [selectedTaskId, setSelectedTaskId] = useState(null);
   const [context, setContext] = useState('list');
-  const [filterStatus, setFilterStatus] = useState('all');
   const [categories, setCategories] = useState([]);
   const [tags, setTags] = useState([]);
 
@@ -94,21 +94,15 @@ function App() {
     localStorage.setItem('categories', JSON.stringify(categories));
     setCategories(categories);
   }
+  
   /**insert a new category into list 
    * @param {Category} category 
   */
   const createCategory = (category) =>
   {
-    let newId = 0;
-    for (let i = 0; i < categories.length; i++)
-    {
-      if (categories[i].id >= newId)
-      {
-        newId = categories[i].id + 1;
-      }
-    }
-    saveCategories([...categories, { ...category, id: newId}]);
+    saveCategories([...categories, { ...category, id: parseInt(categories.length)}]);
   }
+
   /**update information of a category in list 
    * @param {Category} category 
   */
@@ -117,6 +111,7 @@ function App() {
     const newCategories = categories.map(e => e.id.toString() == category.id.toString() ? category : e);
     saveCategories(newCategories);
   }
+
   /**delete a category from list, removes(not delete) all tasks in the category
    * @param {Category} category 
   */
@@ -136,6 +131,7 @@ function App() {
     localStorage.setItem('tags', JSON.stringify(tags));
     setTags(tags);
   }
+
   /**insert a new tag into list 
    * @param {Tag} tag
   */
@@ -151,6 +147,7 @@ function App() {
     }
     saveTags([...tags, { ...tag, id: newId}]);
   }
+
   /**update information of a tag in list 
    * @param {Tag} tag
   */
@@ -159,6 +156,7 @@ function App() {
     const newTags = tags.map(e => e.id.toString() == tag.id.toString() ? tag : e);
     saveTags(newTags);
   }
+  
   /**delete a tag from list, removes this tag for all tasks with it 
    * @param {Tag} tag
   */
@@ -192,8 +190,6 @@ function App() {
             markComplete={markComplete} 
             restoreTask={restoreTask} 
             deleteTaskPermanently={deleteTaskPermanently} 
-            filterStatus={filterStatus} 
-            setFilterStatus={setFilterStatus} 
             categories={categories}
             tags={tags}
           />
@@ -232,6 +228,7 @@ function App() {
           />
         )}
         {context === "dataManagement" && <DataManagement onImport={loadData} />}
+        {context === "resetApp" && <ResetApp setTasks={setTasks} setCategories={setCategories} setTags={setTags}/>}
       </div>
     </div>
   );

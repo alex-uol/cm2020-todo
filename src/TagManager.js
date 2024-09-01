@@ -1,195 +1,109 @@
 import React, { useState } from 'react';
 import { Tag } from './Category';
+import SearchBox from './SearchBox';
+import TaskTags from './TaskTags';
 
-/** draws tag manager
- * @param {Object} param0 
- * @param {Tag[]} param0.tags 
- * @param {Function} param0.updateTag updates the list of tags
- * @param {Function} param0.createTag inset a new tag into tags
- * @param {Function} param0.deleteTag delete a tag from tags
+/**
+ * TagManager Component
+ * Manages a list of tags with functionalities to create, edit, and delete tags.
+ *
+ * @param {Object} props
+ * @param {Tag[]} props.tags - List of all tags.
+ * @param {Function} props.updateTag - Function to update a tag.
+ * @param {Function} props.createTag - Function to create a new tag.
+ * @param {Function} props.deleteTag - Function to delete a tag.
  * @returns {React.JSX.Element}
  */
-export function TagManager({ tags, updateTag, createTag, deleteTag})
-{
+export function TagManager({ tags, updateTag, createTag, deleteTag }) {
   const [editingTag, setEditingTag] = useState(null);
   const [searchValue, setSearchValue] = useState("");
-  const [isSearching, setIsSeaching] = useState(false);
 
-  /** display a tag editor
-   * @param {Tag} e tag
-   * @returns {React.JSX.Element}
-   */
-  function drawEditingTagItem(e)
-  {
-    const updateEditingTag = (e)=>
-    {
-      setEditingTag({...editingTag, [e.target.name]: e.target.value});
+  const handleSearchChange = (value) => {
+    setSearchValue(value);
+    setEditingTag(null); // Clear editing state when searching
+  };
+
+  const filteredTags = !searchValue
+    ? tags
+    : tags.filter(tag =>
+        tag.name.toLowerCase().includes(searchValue.toLowerCase())
+      );
+
+  const handleEditTag = (tag) => {
+    setEditingTag(tag);
+  };
+
+  const handleSaveTag = (tag) => {
+    if (!tag.name.trim()) {
+      alert('Name of a tag cannot be empty.');
+      return;
     }
 
-    const save = ()=>
-    {
-      if (e.name == "")
-      {
-        alert('Name of a tag shall not be empty');
-        return;
-      }
-      if (e.id == -1)
-      {
-        createTag(e);
-      }
-      else
-      {
-        updateTag(e);
-      }
-      setEditingTag(null);
+    if (tag.id === -1) {
+      createTag(tag);
+    } else {
+      updateTag(tag);
     }
 
-    return (
-      <div className="category-list-item" key={e.id}>
-        <div>
-          <input
-            type="text"
-            name="name"
-            value={e.name}
-            onChange={(e)=>updateEditingTag(e)}
-          />
-          <input
-            type="color"
-            name="colour"
-            value={e.colour}
-            onChange={(e)=>updateEditingTag(e)}
-          />
-        </div>
-        <div></div>
-        <div><button onClick={()=>setEditingTag(null)}>Cancel</button></div>
-        <div><button onClick={save}>Save</button></div>
+    setEditingTag(null);
+  };
+
+  const handleCancelEdit = () => {
+    setEditingTag(null);
+  };
+
+  const renderTagItem = (tag) => (
+    <div className="list-item" key={tag.id}>
+      {/* Render a tag using TaskTags Component, change the tag.id to Array */}
+      <TaskTags tags={tags} tagIds={[tag.id]} />
+      <div>
+        <button onClick={() => handleEditTag(tag)}>Edit</button>
+        <button className="delete" onClick={() => deleteTag(tag)}>Delete</button>
       </div>
-    )
-  }
+    </div>
+  );
 
-  /** display a tag
-   * @param {Tag} e tag
-   * @returns {React.JSX.Element}
-   */
-  function drawTagListItem(e)
-  {
-    return (
-      <div className="category-list-item" key={e.id}>
-        <div>
-          <div className="tag-colour-block" style={{backgroundColor: e.colour}}></div>
-          {"#" + e.name}</div>
-        <div></div>
-        <div><button onClick={()=>setEditingTag(e)}>Edit</button></div>
-        <div><button onClick={()=>deleteTag(e)}>Delete</button></div>
+  const renderEditingTag = () => (
+    <div className="list-item" key={editingTag.id}>
+      <input
+        type="text"
+        name="name"
+        value={editingTag.name}
+        onChange={(e) => setEditingTag({ ...editingTag, name: e.target.value })}
+      />
+      <input
+        type="color"
+        name="colour"
+        value={editingTag.colour}
+        onChange={(e) => setEditingTag({ ...editingTag, colour: e.target.value })}
+      />
+      <div>
+        <button onClick={handleCancelEdit}>Cancel</button>
+        <button onClick={() => handleSaveTag(editingTag)}>Save</button>
       </div>
-    )
-  }
+    </div>
+  );
 
-  /** list all tags
-   * @returns {React.JSX.Element[]}
-  */
-  function ListAllTag()
-  {
-    let jsx = [];
-    if (editingTag)
-    {
-      if (editingTag.id === -1)
-      {
-        jsx.push(drawEditingTagItem(editingTag));
-      }
-    }
-    for (let i = 0; i < tags.length; i++)
-    {
-      if (isSearching)
-      {
-        if (tags[i].name.search(searchValue) == -1)
-        {
-          continue;
-        }
-      }
-      if (editingTag)
-      {
-        if (editingTag.id === i)
-        {
-          jsx.push(drawEditingTagItem(editingTag));
-          continue;
-        }
-      }
-      jsx.push(drawTagListItem(tags[i]));
-    }
-    return jsx;
-  }
-
-  /** 
-   * @returns {React.JSX.Element}
-   */
-  function drawNewTagButton()
-  {
-    if (editingTag)
-    {
-      if (editingTag.id == -1)
-      {
-        return;
-      }
-      else
-      {
-        return (
-          <button disabled>+ New Tag</button>
-        )
-      }
-    }
-    return (
-      <button onClick={()=>{setEditingTag(new Tag())}}>+ New Tag</button>
-    )
-  }
-
-  /** draw search box
-   * @returns {React.JSX.Element}
-  */
-  function drawSearchBox()
-  {
-    function OnSearchBoxChange(e)
-    {
-      if (e.target.value == "" && isSearching)
-      {
-        setIsSeaching(false);
-      }
-      setSearchValue(e.target.value);
-    }
-
-    function OnSearchClick()
-    {
-      setEditingTag(null);
-      setIsSeaching(true);
-    }
-
-    return (
-      <div className="search-box">
-        <input
-          type="text"
-          name="searchValue"
-          placeholder="Search a tag..."
-          value={searchValue}
-          onChange={(e)=>OnSearchBoxChange(e)}>
-        </input>
-        <button
-         onClick={()=>OnSearchClick()}
-        >Search</button>
-      </div>
-    )
-  }
+  const handleNewTag = () => {
+    setEditingTag(new Tag());
+  };
 
   return (
-    <div>
+    <div className="tag-manager">
       <div className="header-container">
-        <h2>Tags</h2>
-        <div></div>
-        <div>{drawSearchBox()}</div>
-        <div></div>
+        <h2>Tag Manager</h2>
+        <SearchBox searchValue={searchValue} setSearchValue={handleSearchChange} />
       </div>
-      {drawNewTagButton()}
       <div>
-        {ListAllTag()}
+        <button onClick={handleNewTag} disabled={!!editingTag}>+ New Tag</button>
+      </div>
+      <div>
+        {editingTag && editingTag.id === -1 && renderEditingTag()}
+        {filteredTags.map((tag) =>
+          editingTag && editingTag.id === tag.id
+            ? renderEditingTag()
+            : renderTagItem(tag)
+        )}
       </div>
     </div>
   );
