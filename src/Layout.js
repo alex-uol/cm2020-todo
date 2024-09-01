@@ -25,6 +25,9 @@ export const Layout = () => {
           <li>
             <Link to="/dataManagement">Export / Import</Link>
           </li>
+          <li>
+            <Link to="/resetApp">Reset App</Link>
+          </li>
         </ul>
       </nav>
       <div className="main-content">

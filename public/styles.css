@@ -57,7 +57,6 @@ body, html {
 	background-color: gray;
 }
 
-
 /* Buttons */
 
 button {
@@ -71,6 +70,27 @@ button {
 
 button:hover {
 	background-color: #0056b3;
+}
+
+.sorting-buttons button{
+	background-color: #ff0000;
+}
+
+.sorting-buttons button:hover{
+	background-color: #a50000;
+}
+
+input::file-selector-button {
+	padding: 10px 20px;
+	background-color: #007BFF;
+	color: white;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	}
+
+input::file-selector-button:hover {
+	background-color: #0056B3;
 }
 
 /* Labels */
@@ -146,6 +166,7 @@ button:hover {
 }
 
 
+
 .task-detail-form p, strong
 {
 	padding: 0;
@@ -203,63 +224,21 @@ button:hover {
 
 /* Tag Manager ---- ---- ---- ---- ---- ---- ---- ----*/
 
-.tags-container
-{
+/* Tag list item styles */
+.list-item {
 	display: flex;
+	justify-content: space-between;
 	align-items: center;
-	gap: 5px;
-	min-height: 2vw;
-	margin-bottom: 10px;
+	padding: 10px;
+	border-bottom: 1px solid #ddd;
 }
 
-.tags-container div
-{
-	margin: 5px;
-	display: grid;
-	align-items: center;
-}
-
-.tags-container button
-{
-	width: 2vw;
-	height: 2vw;
-	padding: 0;
-	margin: 5px;
-}
-
-.tag-container div
-{
-	border-radius: 5px;
-	padding-left: 3px;
-	padding-right: 3px;
+.tag-colour-block {
 	display: inline-block;
-	vertical-align: middle;
-}
-
-.tag-container
-{
-	border: 1px solid #ccc;
-	border-radius: 5px;
-	margin: 5px;
-	display: grid;
-	grid-template-columns: min-content auto min-content;
-	vertical-align: middle;
-	align-items: center;
-}
-
-.tag-container select
-{
-	width: fit-content;
-	height: 2vw;
-	margin: 0 0 0 5px;
-}
-
-.tag-colour-block
-{
-	min-width: 20px;
-	width: 2vw;
-	height: 2vw;
-	border-radius: 5px;
+	width: 20px;
+	height: 20px;
+	margin-right: 10px;
+	border-radius: 3px;
 }
 
 .category-container

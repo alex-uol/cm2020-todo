@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Task, SubTask, Priority } from './Task';
 import { Category, Tag } from './Category';
 import { useNavigate } from 'react-router-dom';
+import TaskTags from './TaskTags';
 
 /**draw task detail form
  * @param {Object} param0 
@@ -16,16 +17,6 @@ import { useNavigate } from 'react-router-dom';
  */
 function TaskDetailForm({ task, addTask, saveTask, markComplete, categories, tags, setSelectedTaskId }) {
   const initialTaskState = new Task();
-  /*const initialTaskState = {
-    title: '',
-    description: '',
-    subTasks: [],
-    tags: [],
-    categorie: -1,
-    dueDate: '',
-    priority: 'medium',
-    completed: false,
-  };*/
   const [currentTask, setCurrentTask] = useState(task || initialTaskState);
   const [hasChanges, setHasChanges] = useState(false);
   const [drawTagSelector, setDrawTagSelector] = useState(false);
@@ -50,10 +41,6 @@ function TaskDetailForm({ task, addTask, saveTask, markComplete, categories, tag
       ...prev,
       subTasks: [...prev.subTasks, new SubTask()]
     }))
-    /*setCurrentTask(prev => ({
-      ...prev,
-      subTasks: [...prev.subTasks, { id: Date.now(), title: '', description: '' }]
-    }));*/
     setHasChanges(true);
   };
 
@@ -73,9 +60,10 @@ function TaskDetailForm({ task, addTask, saveTask, markComplete, categories, tag
       saveTask(currentTask);
     } else {
       addTask({ ...currentTask, id: Date.now() });
+      setSelectedTaskId(null);
+      navigate("/");
     }
     setHasChanges(false);
-    goBack();
   };
 
   const handleMarkComplete = () => {
@@ -96,7 +84,7 @@ function TaskDetailForm({ task, addTask, saveTask, markComplete, categories, tag
   }
 
   const addTag = (e) => {
-    const _id = e.target.value;
+    const _id = parseInt(e.target.value);
     if (_id == -1)
     {
       return;
@@ -128,19 +116,27 @@ function TaskDetailForm({ task, addTask, saveTask, markComplete, categories, tag
   function drawTagsContainer()
   {
     /** 
-     * @param {Tag} e 
+     * @param {Tag} tag 
      * @returns {React.JSX.Element}
      */
-    function drawTag(e)
+    function drawTag(tag)
     {
       return (
-        <div key={e.id} className="tag-container">
-          <div className="tag-colour-block" style={{backgroundColor: e.colour}}></div>
-          <div>{e.name}</div>
-          <button className="delete" value={e.id} onClick={removeTag}>x</button>
+        <div className="list-item" key={tag.id}>
+        {/* Render a tag using TaskTags Component, change the tag.id to Array */}
+        <TaskTags tags={tags} tagIds={[tag.id]} />
+        <div>
+            <button className="delete" value={tag.id} onClick={removeTag}>Delete</button>
         </div>
+      </div>
+        // <div key={e.id} className="tag-container">
+        //   <div className="tag-colour-block" style={{backgroundColor: e.colour}}></div>
+        //   <div>{e.name}</div>
+        //   <button className="delete" value={e.id} onClick={removeTag}>Delete</button>
+        // </div>
       )
     }
+
     /** 
      * @returns {React.JSX.Element}
      */
@@ -164,7 +160,7 @@ function TaskDetailForm({ task, addTask, saveTask, markComplete, categories, tag
             {tags.map(e=>(<option value={e.id} key={e.id}>{e.name}</option>))}
           </select>
           <div></div>
-          <button className="delete" onClick={()=>{setDrawTagSelector(false)}}>x</button>
+          <button className="delete" onClick={()=>{setDrawTagSelector(false)}}>Cancel</button>
         </div>
       )
     }
@@ -222,7 +218,6 @@ function TaskDetailForm({ task, addTask, saveTask, markComplete, categories, tag
           type="radio"
           name="priority"
           value="low"
-          //checked={currentTask.priority === 'low'}
           checked = {currentTask.priority == Priority.low}
           onChange={handleChange}
         /> Low
@@ -230,7 +225,6 @@ function TaskDetailForm({ task, addTask, saveTask, markComplete, categories, tag
           type="radio"
           name="priority"
           value="medium"
-          //checked={currentTask.priority === 'medium'}
           checked = {currentTask.priority == Priority.medium}
           onChange={handleChange}
         /> Medium
@@ -238,7 +232,6 @@ function TaskDetailForm({ task, addTask, saveTask, markComplete, categories, tag
           type="radio"
           name="priority"
           value="high"
-          //checked={currentTask.priority === 'high'}
           checked = {currentTask.priority == Priority.high}
           onChange={handleChange}
         /> High

@@ -1,7 +1,10 @@
 import React, { useState }  from 'react';
-import { Status, Task } from './Task';
+import { Status, Task, Priority } from './Task';
 import { Category, Tag } from './Category';
 import { useNavigate } from "react-router-dom";
+
+import SearchBox from './SearchBox';
+import TaskItem from './TaskItem';
 
 /**
  * @param {Object} param0 
@@ -11,231 +14,255 @@ import { useNavigate } from "react-router-dom";
  * @param {Function} param0.markComplete
  * @param {Function} param0.restoreTask
  * @param {Function} param0.deleteTaskPermanently
- * @param {Number | null} param0.filterStatus filter tasks with status value or show all tasks if null
- * @param {Function} param0.setFilterStatus
  * @param {Category[]} param0.categories list of categories
  * @param {Tag[]} param0.tags list of tags
  * @returns {React.JSX.Element}
  */
-function TaskList({ tasks, selectTask, moveToTrash, markComplete, restoreTask, deleteTaskPermanently, filterStatus, setFilterStatus, categories, tags }) {
+function TaskList({ 
+  tasks, 
+  setSelectedTaskId, 
+  moveToTrash, 
+  markComplete, 
+  restoreTask, 
+  deleteTaskPermanently, 
+  categories, 
+  tags 
+}) {
   const [searchValue, setSearchValue] = useState("");
   const [isSearching, setIsSeaching] = useState(false);
   const navigate = useNavigate();
-
   /**now time for comparing with due date of tasks*/
   const today = new Date().toISOString().split('T')[0];
+  const [sortOption, setSortOption] = useState("unsorted");
+  const [filterStatus, setFilterStatus] = useState('all');
 
-  /**calculate remaining time from due date 
-   * @param {string} dueDate due date of task
-   * @returns {string} remaining time in plain text from
-  */
-  const calculateRemainingTime = (dueDate) => {
-    const due = new Date(dueDate);
-    const now = new Date();
-    const diffMs = due - now;
 
-    if (diffMs <= 0) return 'Overdue';
-    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-    if (diffDays > 0) return `${diffDays} day(s) remaining`;
-
-    const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
-    if (diffHours > 0) return `${diffHours} hour(s) remaining`;
-
-    const diffMinutes = Math.floor(diffMs / (1000 * 60));
-    return `${diffMinutes} minute(s) remaining`;
-  };
-
-  /**filtered tasks*/
-  const filteredTasks = tasks.filter(task => {
-    if (filterStatus !== "all")
-    {
-      return task.status === filterStatus;
-    }
-    return true;
+  /**  Filter tasks based on search and status */
+  const filteredTasks = tasks.filter((task) => {
+    const matchesStatus = filterStatus === "all" || task.status === filterStatus;
+    const matchesSearch =
+      searchValue === "" ||
+      task.title.toLowerCase().includes(searchValue.toLowerCase()) ||
+      task.description.toLowerCase().includes(searchValue.toLowerCase());
+    return matchesStatus && matchesSearch;
   });
+
+  /** select a task and navigate to task editing page
+   * @param {Task} task 
+   */
+  const selectTask = (task) => {
+    if (task.status !== Status.trashed)
+    {
+      setSelectedTaskId(task.id);
+      navigate("/task");
+    }
+  }
+
+  /** render the tasklist */
+  const renderTasks = (tasks) => {
+    return (
+      <ul className="tasklist">
+        {tasks.map((task) => (
+          <TaskItem
+            key={task.id}
+            task={task}
+            selectTask={()=>selectTask(task)}
+            markComplete={markComplete}
+            restoreTask={restoreTask}
+            moveToTrash={moveToTrash}
+            deleteTaskPermanently={deleteTaskPermanently}
+            tags={tags}
+          />
+        ))}
+      </ul>
+    );
+  };
 
   const heading = filterStatus === 'all' ? 'All Tasks' : filterStatus + ' Tasks';
 
 
-
-  /**
-   * @param {Task} task 
-   * @returns {React.JSX.Element}
-   */
-  function drawTask(task)
-  {
-    function getClassName()
-    {
-      if (task.dueDate != "" && task.dueDate < today)
-      {
-        return "overdue";
-      }
-      if (task.status == Status.active || task.status === Status.trashed)
-      {
-        return task.status;
-      }
-      return "";
+  const sortedTasks = () => {
+    switch (sortOption) {
+      case "byCategory":
+        return renderTasksByGroup(sortTasksByCategory(filteredTasks), categories, "category");
+      case "byTags":
+        return renderTasksByGroup(sortTasksByTags(filteredTasks), tags, "tag");
+      case "byPriority":
+        return renderTasksByPriority(sortTasksByPriority(filteredTasks));
+      case "bySubTasks":
+        return renderTasksbySubTasks(sortTasksBySubTasks(filteredTasks));
+      default:
+        return renderTasks(filteredTasks);
     }
+  };
 
-    /**draws list of tags of this task
-     * @returns {React.JSX.Element[]}
-    */
-    function drawTags()
-    {
-      let jsx = [];
-      for (let i = 0; i < task.tags.length; i++)
-      {
-        const _tag = tags.find((e)=>e.id == task.tags[i]);
-        jsx.push(
-          <div className="tag-container" key={_tag.id} style={{backgroundColor : _tag.colour}}>{_tag.name}</div>
-        );
-      }
-      return jsx;
-    }
+  // Function to render grouped tasks by category or tags
+  const renderTasksByGroup = (groupedTasks, groupArray, groupType) => {
+    return Array.from(groupedTasks.entries()).map(([groupId, tasks]) => {
+      const group = groupArray.find((group) => group.id == groupId);
 
-    const redirectToTask = () =>
-    {
-      if (task.status !== Status.trashed)
-      {
-        selectTask(task.id);
-        navigate("/task");
-      }
-    }
+      return (
+        <div key={groupId}>
+          {groupType === "category" && group && <div><strong>{`Category: ${group.title}`}</strong></div>}
+          {groupType === "tag" && group && <div><strong>{`Tag: ${group.name}`}</strong></div>}
+          {renderTasks(tasks)}
+        </div>
+      );
+    });
+  };
 
+  // Function to render grouped tasks by priority
+  const renderTasksByPriority = (tasksByPriority) => {
     return (
-    <li className={getClassName()} key={task.id}>
-      <div onClick={redirectToTask}>
-        <strong>{task.title}</strong> - {task.description}
-        <div>Priority: {task.priority}</div>
-        <div>Due Date: {task.dueDate ? task.dueDate : "Not yet set"} {task.dueDate ? (calculateRemainingTime(task.dueDate)) : ""}</div>
-        <div>Status: {task.status}</div>
-        {task.subTasks && task.subTasks.length > 0 && (
-          <ul>
-            {task.subTasks.map(subTask => (
-              <li key={subTask.id}>{subTask.title}</li>
-            ))}
-          </ul>
-        )}
-      </div>
-      <div className="tasklist-tags-container">
-        {drawTags()}
-      </div>
       <div>
-        {task.status === Status.active && <button onClick={() => markComplete(task.id)}>Mark Completed</button>}
-        {task.status === Status.completed && <button onClick={() => restoreTask(task.id)}>Mark Uncomplete</button>}
-        {task.status !== Status.trashed && <button onClick={() => moveToTrash(task.id)}>Delete</button>}
-        {task.status === Status.trashed && <button onClick={() => deleteTaskPermanently(task.id)}>Delete Permanently</button>}
+        <h3>High Priority</h3>
+        {renderTasks(tasksByPriority[Priority.high])}
+        <h3>Medium Priority</h3>
+        {renderTasks(tasksByPriority[Priority.medium])}
+        <h3>Low Priority</h3>
+        {renderTasks(tasksByPriority[Priority.low])}
       </div>
-    </li>)
-  }
+    );
+  };
 
-  /**
-   * @param {number} catId category id
-   * @returns 
-   */
-  function drawCategoryHeader(catId)
-  {
-    let _cat = categories.find((e)=>e.id == catId);
-    if (_cat === undefined)
-    {
-      return (
-        <div key={-1}><strong>Common</strong></div>
-      )
-    }
-    else
-    {
-      return (
-        <div key={catId}><strong>{"#" + _cat.title}</strong></div>
-      )
-    }
-  }
-
-  /**draw all tasks */
-  function drawTasks()
-  {
-    let jsx = [];
-    for (let i = 0; i < filteredTasks.length; i++)
-    {
-      jsx.push(drawTask(filteredTasks[i]));
-    }
-    return jsx;
-  }
-
-  /**draw all tasks by category */
-  function drawTasksByCategory()
-  {
-    let jsx = [];
-    let _tasks = filteredTasks;
-    let catId = null;
-    _tasks.sort((a, b)=>{return a.category - b.category})
-
-    for (let i = 0; i < _tasks.length; i++)
-    {
-      if (isSearching)
-      {
-        if(filteredTasks[i].title.search(searchValue) == -1 &&
-          filteredTasks[i].description.search(searchValue) == -1)
-        {
-          continue;
-        }
-      }
-      if (catId !== _tasks[i].category)
-      {
-        catId = _tasks[i].category;
-        jsx.push(drawCategoryHeader(catId));
-      }
-      jsx.push(drawTask(_tasks[i]));
-    }
-    return jsx;
-  }
-
-  /** draw search box
-    * @returns {React.JSX.Element}
-    */
-  function drawSearchBox()
-  {
-    function OnSearchBoxChange(e)
-    {
-      if (e.target.value == "" && isSearching)
-      {
-        setIsSeaching(false);
-      }
-      setSearchValue(e.target.value);
-    }
-
+  // Function to render grouped tasks by priority
+  const renderTasksbySubTasks = (tasksBySubTasks) => {
+    const { withSubTasks, withoutSubTasks } = tasksBySubTasks;
     return (
-      <div className="search-box">
-        <input
-          type="text"
-          name="searchValue"
-          placeholder="Search a category..."
-          value={searchValue}
-          onChange={(e)=>OnSearchBoxChange(e)}>
-        </input>
-        <button
-          onClick={()=>setIsSeaching(true)}
-        >Search</button>
+      <div>
+        <h3>Tasks with Sub-Tasks</h3>
+        {renderTasks(withSubTasks)}
+        <h3>Tasks without Sub-Tasks</h3>
+        {renderTasks(withoutSubTasks)}
       </div>
-    )
-  }
+    );
+  };
+
+  // Functions to sort tasks by priority
+  const sortTasksByPriority = (filteredTasks) => {
+    const tasksByPriority = {
+      [Priority.high]: [],
+      [Priority.medium]: [],
+      [Priority.low]: [],
+    };
+  
+    filteredTasks.forEach((task) => {
+      tasksByPriority[task.priority].push(task);
+    });
+  
+    return tasksByPriority;
+  };
+
+  const sortTasksBySubTasks = (filteredTasks) => {
+    const tasksWithSubTasks = [];
+    const tasksWithoutSubTasks = [];
+  
+    filteredTasks.forEach((task) => {
+      if (task.subTasks.length > 0) {
+        tasksWithSubTasks.push(task);
+      } else {
+        tasksWithoutSubTasks.push(task);
+      }
+    });
+  
+    return {
+      withSubTasks: tasksWithSubTasks,
+      withoutSubTasks: tasksWithoutSubTasks,
+    };
+  };
+
+  // Function to sort the tasks by category
+  const sortTasksByCategory = (tasks) => {
+    
+    // create an empty map
+    const tasksByCategory = new Map();
+
+    // set the default category
+    tasksByCategory.set(parseInt(-1), []);
+
+    tasks.forEach((task) => {
+      const categoryId = task.category;
+
+      // If not yet created, create a new category group by categoryId
+      if (!tasksByCategory.has(categoryId)) {
+        tasksByCategory.set(categoryId, []);
+      }
+      // Push the current task into the array associated with its category 
+      tasksByCategory.get(categoryId).push(task);
+    });
+    
+    return tasksByCategory;
+  };
+
+  // Function to sort the tasks by tags
+  const sortTasksByTags = (tasks) => {
+    
+    // create an empty map
+    const tasksByTag = new Map();
+
+    // set the default tags for tasks without a tag
+    tasksByTag.set(parseInt(-1), []);
+
+    tasks.forEach((task) => {
+      // For a task without a tag
+      if (task.tags.length === 0) {
+        tasksByTag.get(parseInt(-1)).push(task);
+      } 
+      // For a task with tags
+      else 
+      {
+        task.tags.forEach((tagId) => {
+          
+          if (!tasksByTag.has(tagId)) {
+            tasksByTag.set(tagId, []);
+          }
+  
+          tasksByTag.get(tagId).push(task);
+        });
+      }
+    });
+
+    return tasksByTag;
+  };
+
+
+  // const sortTasksByPriority = (tasks) => {
+  //   return [...tasks].sort((a, b) => {
+  //     const priorityOrder = [Priority.high, Priority.medium, Priority.low];
+  //     return priorityOrder.indexOf(a.priority) - priorityOrder.indexOf(b.priority);
+  //   });
+  // };
+
+  // Functions to sort tasks by tasks with subtasks
+  // const sortTasksBySubTasks = (tasks) => {
+  //   return tasks.filter(task => task.subTasks.length > 0);
+  // };
 
   return (
     <div className="task-list">
       <div className="header-container">
         <h2>{heading}</h2>
-        <div></div>
-        {drawSearchBox()}
-        <div></div>
+        <SearchBox searchValue={searchValue} setSearchValue={setSearchValue} />
       </div>
+      {/* Filter buttons */}
       <div className="filter-buttons">
         <button onClick={() => setFilterStatus('all')}>Show All</button>
         {filterStatus !== Status.completed && <button onClick={() => setFilterStatus(Status.completed/*'completed'*/)}>Show Completed</button>}
         {filterStatus !== Status.active && <button onClick={() => setFilterStatus(Status.active/*'uncompleted'*/)}>Show Uncompleted</button>}
         {filterStatus !== Status.trashed && <button onClick={() => setFilterStatus(Status.trashed/*'trashed'*/)}>Show Trashed</button>}
       </div>
-      <ul>
-        {drawTasksByCategory()}
-      </ul>
+
+      {/* Sorting buttons */}
+      <div className="sorting-buttons">
+        <button onClick={() => setSortOption("unsorted")}>Unsorted</button>
+        <button onClick={() => setSortOption("byCategory")}>Sort by Category</button>
+        <button onClick={() => setSortOption("byTags")}>Sort by Tags</button>
+        <button onClick={() => setSortOption("byPriority")}>Sort by Priority</button>
+        <button onClick={() => setSortOption("bySubTasks")}>Sort Tasks with Sub-Tasks</button>
+      </div>
+      <div>
+        {sortedTasks()}
+      </div>
     </div>
   );
 }
