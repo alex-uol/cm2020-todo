@@ -6,9 +6,6 @@ import { useNavigate } from "react-router-dom";
 import SearchBox from './SearchBox';
 import TaskItem from './TaskItem';
 
-import SearchBox from './SearchBox';
-import TaskItem from './TaskItem';
-
 /**
  * @param {Object} param0 
  * @param {Task[]} param0.tasks list of 
@@ -36,8 +33,6 @@ function TaskList({
   const navigate = useNavigate();
   /**now time for comparing with due date of tasks*/
   const today = new Date().toISOString().split('T')[0];
-  const [sortOption, setSortOption] = useState("unsorted");
-  const [filterStatus, setFilterStatus] = useState('all');
   const [sortOption, setSortOption] = useState("unsorted");
   const [filterStatus, setFilterStatus] = useState('all');
 
