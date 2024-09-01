@@ -16,7 +16,6 @@ import TaskTags from './TaskTags';
  */
 function TaskDetailForm({ task, addTask, saveTask, markComplete, goBack, categories, tags }) {
   const initialTaskState = new Task();
-
   const [currentTask, setCurrentTask] = useState(task || initialTaskState);
   const [hasChanges, setHasChanges] = useState(false);
   const [drawTagSelector, setDrawTagSelector] = useState(false);

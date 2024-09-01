@@ -12,6 +12,7 @@ import DataManagement from './DataManagement';
 import ResetApp from './ResetApp';
 
 
+
 function App() {
   const [tasks, setTasks] = useState([]);
   const [selectedTaskId, setSelectedTaskId] = useState(null);
@@ -94,13 +95,22 @@ function App() {
     localStorage.setItem('categories', JSON.stringify(categories));
     setCategories(categories);
   }
-  
+
   /**insert a new category into list 
    * @param {Category} category 
   */
   const createCategory = (category) =>
   {
-    saveCategories([...categories, { ...category, id: parseInt(categories.length)}]);
+    //saveCategories([...categories, { ...category, id: parseInt(categories.length)}]);
+    let newId = 0;
+    for (let i = 0; i < categories.length; i++)
+    {
+      if (categories[i].id >= newId)
+      {
+        newId = categories[i].id + 1;
+      }
+    }
+    saveCategories([...categories, { ...category, id: newId}]);
   }
 
   /**update information of a category in list 
@@ -156,7 +166,7 @@ function App() {
     const newTags = tags.map(e => e.id.toString() == tag.id.toString() ? tag : e);
     saveTags(newTags);
   }
-  
+
   /**delete a tag from list, removes this tag for all tasks with it 
    * @param {Tag} tag
   */

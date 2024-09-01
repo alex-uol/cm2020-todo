@@ -46,7 +46,6 @@ body, html {
     padding: 20px;
 	height: 100vh;
 	overflow: auto;
-}
 
 .navbar .divider {
 	height: 1px;
@@ -160,6 +159,7 @@ input::file-selector-button:hover {
 	border: 1px solid #ccc;
 	border-radius: 5px;
 }
+
 
 
 .task-detail-form p, strong

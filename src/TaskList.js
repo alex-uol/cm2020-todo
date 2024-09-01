@@ -17,7 +17,6 @@ import TaskItem from './TaskItem';
  * @param {Tag[]} param0.tags list of tags
  * @returns {React.JSX.Element}
  */
-
 function TaskList({ 
   tasks, 
   selectTask, 

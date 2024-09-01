@@ -35,6 +35,7 @@ export class Tag
          * @type {string}
         */
         this.colour = "#aaaaaa";
+
         /** list of id of tasks with this tag
          * @type {number[]}
          */
