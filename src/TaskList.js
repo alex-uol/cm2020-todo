@@ -6,6 +6,9 @@ import { useNavigate } from "react-router-dom";
 import SearchBox from './SearchBox';
 import TaskItem from './TaskItem';
 
+import SearchBox from './SearchBox';
+import TaskItem from './TaskItem';
+
 /**
  * @param {Object} param0 
  * @param {Task[]} param0.tasks list of 
@@ -35,7 +38,8 @@ function TaskList({
   const today = new Date().toISOString().split('T')[0];
   const [sortOption, setSortOption] = useState("unsorted");
   const [filterStatus, setFilterStatus] = useState('all');
-
+  const [sortOption, setSortOption] = useState("unsorted");
+  const [filterStatus, setFilterStatus] = useState('all');
 
   /**  Filter tasks based on search and status */
   const filteredTasks = tasks.filter((task) => {
@@ -110,6 +114,7 @@ function TaskList({
       );
     });
   };
+
 
   // Function to render grouped tasks by priority
   const renderTasksByPriority = (tasksByPriority) => {
