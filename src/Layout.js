@@ -16,7 +16,7 @@ export const Layout = () => {
             <Link to="/task">Create Task</Link>
           </li>
           <li>
-            <Link to="/categorieManager">Categorie Manager</Link>
+            <Link to="/categoryManager">Categorie Manager</Link>
           </li>
           <li>
             <Link to="/tagManager">Tag Manager</Link>

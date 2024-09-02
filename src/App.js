@@ -41,12 +41,6 @@ function App() {
 
   const addTask = (task) => {
     saveTasks([...tasks, { ...task, status: Status.active, id: Date.now() }]);
-    if (task.category != -1)
-    {
-      let cat = categories.find((e)=>e.id == task.category);
-      cat = {...cat, tasks: [...cat.tasks, task.id]};
-      updateCategory(cat);
-    }
     //setContext('list');
   };
 
@@ -172,6 +166,7 @@ function App() {
     {
       for (let j = 0; j < _tasks[i].tags.length; j++)
       {
+        console.log(_tasks[i].tags[j].toString() + "==?" + tag.id.toString());
         if (_tasks[i].tags[j].toString() == tag.id.toString())
         {
           _tasks[i].tags.splice(j, 1);
@@ -179,7 +174,7 @@ function App() {
       }
     }
     saveTasks(_tasks);
-    const newTags = categories.filter(e => e.id !== tag.id); 
+    const newTags = tags.filter(e => e.id !== tag.id); 
     saveTags(newTags); 
   }
 
@@ -211,7 +206,7 @@ function App() {
             />
             
           }/>
-          <Route path="/categorieManager" element={
+          <Route path="/categoryManager" element={
             <CategoryManager 
               categories={categories} 
               updateCategory={updateCategory} 
