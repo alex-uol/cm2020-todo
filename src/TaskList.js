@@ -36,7 +36,6 @@ function TaskList({
   const [sortOption, setSortOption] = useState("unsorted");
   const [filterStatus, setFilterStatus] = useState('all');
 
-
   /**  Filter tasks based on search and status */
   const filteredTasks = tasks.filter((task) => {
     const matchesStatus = filterStatus === "all" || task.status === filterStatus;
@@ -110,6 +109,7 @@ function TaskList({
       );
     });
   };
+
 
   // Function to render grouped tasks by priority
   const renderTasksByPriority = (tasksByPriority) => {

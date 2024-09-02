@@ -25,6 +25,7 @@ export const Layout = () => {
           <li>
             <Link to="/dataManagement">Export / Import</Link>
           </li>
+          <li className="divider"></li>
           <li>
             <Link to="/resetApp">Reset App</Link>
           </li>
