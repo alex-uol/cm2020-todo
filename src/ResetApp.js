@@ -30,7 +30,7 @@ const ResetApp = ({ setTasks, setCategories, setTags }) => {
         {!complete ? (
           <button onClick={handleClearLocalStorage}>Clear Local Storage</button>
         ) : (
-          <span className="success">Cleared Local Storage!</span>
+          <span className="label-success">Cleared Local Storage!</span>
         )}
       </div>
       

@@ -56,7 +56,7 @@ export function CategoryManager({ categories, updateCategory, createCategory, de
       <div><strong>{"*" + category.title}</strong></div>
       <div>
         <button onClick={() => handleEditCategory(category)}>Edit</button>
-        <button className="delete" onClick={() => deleteCategory(category)}>Delete</button>
+        <button className="warning" onClick={() => deleteCategory(category)}>Delete</button>
       </div>
     </div>
   );

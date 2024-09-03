@@ -46,7 +46,7 @@ export default function Import({ onImport }) {
         <>
           {importError && (
             <div>
-              <span class="error">Import Error: {importError} </span>
+              <span className="label-error">Import Error: {importError} </span>
             </div>
           )}
           <input type="file" onChange={onFileChange} />
@@ -54,7 +54,7 @@ export default function Import({ onImport }) {
       ) : !complete ? (
         // Confirmation button
         <>
-          <span className="warning">
+          <span className="label-warning">
             Warning! All the existing data will be lost.
           </span>
           <br />
@@ -63,7 +63,7 @@ export default function Import({ onImport }) {
       ) : (
         // Success message
         <>
-          <span className="success">
+          <span className="label-success">
             Import complete! Please restart the application
           </span>
         </>
