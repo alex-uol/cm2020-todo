@@ -254,11 +254,11 @@ function TaskList({
 
       {/* Sorting buttons */}
       <div className="sorting-buttons">
-        <button onClick={() => setSortOption("unsorted")}>Unsorted</button>
-        <button onClick={() => setSortOption("byCategory")}>Sort by Category</button>
-        <button onClick={() => setSortOption("byTags")}>Sort by Tags</button>
-        <button onClick={() => setSortOption("byPriority")}>Sort by Priority</button>
-        <button onClick={() => setSortOption("bySubTasks")}>Sort Tasks with Sub-Tasks</button>
+        <button className={sortOption == "unsorted" ? "active" : ""} onClick={() => setSortOption("unsorted")}>Unsorted</button>
+        <button className={sortOption == "byCategory" ? "active" : ""} onClick={() => setSortOption("byCategory")}>Sort by Category</button>
+        <button className={sortOption == "byTags" ? "active" : ""} onClick={() => setSortOption("byTags")}>Sort by Tags</button>
+        <button className={sortOption == "byPriority" ? "active" : ""} onClick={() => setSortOption("byPriority")}>Sort by Priority</button>
+        <button className={sortOption == "bySubTasks" ? "active" : ""} onClick={() => setSortOption("bySubTasks")}>Sort Tasks with Sub-Tasks</button>
       </div>
       <div>
         {sortedTasks()}

@@ -1,9 +1,64 @@
+/* Variables */
+:root {
+	--background: light-dark(#fff, rgb(40, 40, 40));
+
+	/* Buttons */
+	/* Regular */
+	--btn-color: light-dark(#0D47C4, #fff);
+	--btn-border: light-dark(#0D47C4, #fff);
+	--btn-background: light-dark(#fff, transparent);
+	/* Active */
+	--btn-active-color: light-dark(#fff, #0D47C4);
+	--btn-active-background: light-dark(#0D47C4, #fff);
+	/* Warning */
+	--btn-warning-background: light-dark(#A90003, #F26A6A);
+	--btn-warning-color: light-dark(#fff, #000);
+	--btn-warning-hover-background: light-dark(darkred, rgb(237, 61, 61));
+	/* Hover */
+	--btn-hover-background: light-dark(#0d47c44a, #ffffff15);
+
+	/* Labels */
+	--label-warning-background: light-dark(orange, #a97b08);
+	--label-success-background: light-dark(rgb(56, 250, 131), rgb(47, 133, 80));
+	--label-error-background: red;
+}
+
+
+/* Add support for material icons */
+
+.material-icons {
+	font-family: 'Material Icons';
+	font-weight: normal;
+	font-style: normal;
+	font-size: 24px;  /* Preferred icon size */
+	display: inline-block;
+	line-height: 1;
+	text-transform: none;
+	letter-spacing: normal;
+	word-wrap: normal;
+	white-space: nowrap;
+	direction: ltr;
+  
+	/* Support for all WebKit browsers. */
+	-webkit-font-smoothing: antialiased;
+	/* Support for Safari and Chrome. */
+	text-rendering: optimizeLegibility;
+  
+	/* Support for Firefox. */
+	-moz-osx-font-smoothing: grayscale;
+  
+	/* Support for IE. */
+	font-feature-settings: 'liga';
+  }
+
+
 /* App */
 
 body, html {
 	padding: 0;
 	margin: 0;
-	font-family: system-ui, -apple-system;
+	font-family: "Noto Sans",  system-ui, -apple-system, sans-serif;
+	background-color: var(--background);
 }
 
 .app {
@@ -17,32 +72,11 @@ body, html {
     padding: 20px;
 }
 
-/* Navbar */
-  
-.navbar {
-    width: 200px;
-    background-color: #333;
-    color: white;
-    padding: 15px;
-}
-  
-.navbar ul {
-    list-style-type: none;
-    padding: 0;
-}
-  
-.navbar ul li {
-    margin: 15px 0;
-    cursor: pointer;
-}
-
-.navbar ul li a {
-	text-decoration: none;
-	color: white;
-}
-  
-.navbar ul li a:hover {
-    text-decoration: underline;
+h2 {
+	font-size: 2rem;
+	font-weight: 600;
+	margin-top: 0;
+	padding-top: 0;
 }
 
 .main-content {
@@ -52,32 +86,90 @@ body, html {
 	overflow: auto;
 }
 
-.navbar .divider {
+/* Navbar */
+  
+.navbar {
+    width: 200px;
+    background-color: #333;
+    color: white;
+    padding: 15px;
+}
+
+.navbar ul {
+    list-style-type: none;
+    padding: 0;
+	margin: 0;
+}
+
+.navbar ul li a {
+    padding: 0.7rem 0.9rem;
+    margin-bottom: 0.5rem;
+    border-radius: 0.8rem;
+	display: block;
+	text-decoration: none;
+	color: #fff;
+}
+
+.navbar li a:hover {
+	background-color: rgba(0, 0, 0, 0.25);
+}
+
+.navbar li a.active {
+	background: #0D47C4;
+}
+
+.navbar .divider, .navbar .divider:hover {
 	height: 1px;
+	padding: 0;
+	margin: 0.5rem 0;
 	background-color: gray;
+	cursor: default;
+}
+
+/* Color mode selector */
+
+#color-mode button {
+	padding: 0.4rem 1rem;
+	color: #000;
+	background: #fff;
+	margin: 3rem 0.5rem 0 0;
+	border-radius: 0.8rem;
+	border: none;
+}
+
+#color-mode button:disabled {
+	color: #fff;
+	background: #000;
 }
 
 /* Buttons */
 
 button {
 	padding: 10px 20px;
-	background-color: #007BFF;
-	color: white;
-	border: none;
+	background-color: var(--btn-background);
+	color: var(--btn-color);
+	border: solid 1px var(--btn-border);
 	border-radius: 5px;
 	cursor: pointer;
+	margin: 0.5rem;
 }
 
 button:hover {
-	background-color: #0056b3;
+	background-color: var(--btn-hover-background);
 }
 
-.sorting-buttons button{
-	background-color: #ff0000;
+button.active, button:active {
+	background-color: var(--btn-active-background);
+	color: var(--btn-active-color);
 }
 
-.sorting-buttons button:hover{
-	background-color: #a50000;
+button.warning {
+	color: var(--btn-warning-color);
+	background-color: var(--btn-warning-background);
+}
+
+button.warning:hover {
+	background-color: var(--btn-warning-hover-background);
 }
 
 input::file-selector-button {
@@ -93,25 +185,41 @@ input::file-selector-button:hover {
 	background-color: #0056B3;
 }
 
+/* Forms */
+
+select {
+	width: 50%;
+	margin-bottom: 10px;
+	padding: 10px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+}
+
+input {
+	padding: 10px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+}
+
 /* Labels */
 
-.warning, .success, .error {
+.label-warning, .label-success, .label-error {
 	border-radius: 1rem;
 	padding: 0.2rem 0.5rem;
 	display: inline-block;
 	margin: 1rem 0;
 }
 
-.warning {
-	background-color: orange;
+.label-warning {
+	background-color: var(--label-warning-background);
 }
 
-.success {
-	background-color: lightgreen;
+.label-success {
+	background-color: var(--label-success-background);
 }
 
-.error {
-	background-color: red;
+.label-error {
+	background-color: var(--label-error-background);
 	color: white;
 }
 
@@ -199,6 +307,8 @@ input::file-selector-button:hover {
 	display: grid;
 	grid-template-columns: auto min-content;
 	align-items: center;
+	position: relative;
+	top: -1rem;
 }
 
 .category-list-item
@@ -255,53 +365,6 @@ input::file-selector-button:hover {
 	width: fit-content;
 }
 
-.delete
-{
-	background-color: red;
-}
-
-.delete:hover
-{
-	background-color: darkred;
-}
-
-
-
-/* General ---- ---- ---- ---- ---- ---- ---- ----*/
-
-body 
-{
-	margin: 0;
-	padding: 0;
-}
-
-button {
-	padding: 10px 20px;
-	background-color: #007BFF;
-	color: white;
-	border: none;
-	border-radius: 5px;
-	cursor: pointer;
-}
-
-button:hover {
-	background-color: #0056b3;
-}
-
-select
-{
-	width: 50%;
-	margin-bottom: 10px;
-	padding: 10px;
-	border: 1px solid #ccc;
-	border-radius: 5px;
-}
-
-input {
-	padding: 10px;
-	border: 1px solid #ccc;
-	border-radius: 5px;
-}
 /* Data Management */
 
 #data-management section {

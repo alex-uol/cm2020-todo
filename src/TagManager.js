@@ -58,7 +58,7 @@ export function TagManager({ tags, updateTag, createTag, deleteTag }) {
       <TaskTags tags={tags} tagIds={[tag.id]} />
       <div>
         <button onClick={() => handleEditTag(tag)}>Edit</button>
-        <button className="delete" onClick={() => deleteTag(tag)}>Delete</button>
+        <button className="warning" onClick={() => deleteTag(tag)}>Delete</button>
       </div>
     </div>
   );

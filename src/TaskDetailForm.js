@@ -126,13 +126,13 @@ function TaskDetailForm({ task, addTask, saveTask, markComplete, categories, tag
         {/* Render a tag using TaskTags Component, change the tag.id to Array */}
         <TaskTags tags={tags} tagIds={[tag.id]} />
         <div>
-            <button className="delete" value={tag.id} onClick={removeTag}>Delete</button>
+            <button className="warning" value={tag.id} onClick={removeTag}>Delete</button>
         </div>
       </div>
         // <div key={e.id} className="tag-container">
         //   <div className="tag-colour-block" style={{backgroundColor: e.colour}}></div>
         //   <div>{e.name}</div>
-        //   <button className="delete" value={e.id} onClick={removeTag}>Delete</button>
+        //   <button className="warning" value={e.id} onClick={removeTag}>Delete</button>
         // </div>
       )
     }
@@ -160,7 +160,7 @@ function TaskDetailForm({ task, addTask, saveTask, markComplete, categories, tag
             {tags.map(e=>(<option value={e.id} key={e.id}>{e.name}</option>))}
           </select>
           <div></div>
-          <button className="delete" onClick={()=>{setDrawTagSelector(false)}}>Cancel</button>
+          <button className="warning" onClick={()=>{setDrawTagSelector(false)}}>Cancel</button>
         </div>
       )
     }

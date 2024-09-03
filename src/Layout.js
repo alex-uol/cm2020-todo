@@ -1,5 +1,6 @@
 import React from 'react';
-import { Outlet, Link } from "react-router-dom";
+import { Outlet, NavLink } from 'react-router-dom';
+import ColorSelector from './ColorSelector';
 
 /** Returns a layout template, replaces NavBar
  * @returns {React.JSX.Element}
@@ -10,30 +11,31 @@ export const Layout = () => {
       <nav className="navbar">
         <ul>
           <li>
-            <Link to="/">All Tasks</Link>
+            <NavLink to="/">All Tasks</NavLink>
           </li>
           <li>
-            <Link to="/task">Create Task</Link>
+            <NavLink to="/task">Create Task</NavLink>
           </li>
           <li>
-            <Link to="/categoryManager">Categorie Manager</Link>
+            <NavLink to="/categoryManager">Categorie Manager</NavLink>
           </li>
           <li>
-            <Link to="/tagManager">Tag Manager</Link>
-          </li>
-          <li className="divider"></li>
-          <li>
-            <Link to="/dataManagement">Export / Import</Link>
+            <NavLink to="/tagManager">Tag Manager</NavLink>
           </li>
           <li className="divider"></li>
           <li>
-            <Link to="/resetApp">Reset App</Link>
+            <NavLink to="/dataManagement">Export / Import</NavLink>
+          </li>
+          <li className="divider"></li>
+          <li>
+            <NavLink to="/resetApp">Reset App</NavLink>
           </li>
         </ul>
+        <ColorSelector />
       </nav>
       <div className="main-content">
         <Outlet />
       </div>
     </div>
-  )
-}
+  );
+};
