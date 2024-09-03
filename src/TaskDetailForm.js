@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Task, SubTask, Priority } from './Task';
 import { Category, Tag } from './Category';
+import { useNavigate } from 'react-router-dom';
 import TaskTags from './TaskTags';
 
 /**draw task detail form
@@ -14,11 +15,12 @@ import TaskTags from './TaskTags';
  * @param {Tag[]} param0.tags list of all tags
  * @returns {React.JSX.Element}
  */
-function TaskDetailForm({ task, addTask, saveTask, markComplete, goBack, categories, tags }) {
+function TaskDetailForm({ task, addTask, saveTask, markComplete, categories, tags, setSelectedTaskId }) {
   const initialTaskState = new Task();
   const [currentTask, setCurrentTask] = useState(task || initialTaskState);
   const [hasChanges, setHasChanges] = useState(false);
   const [drawTagSelector, setDrawTagSelector] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (task) {
@@ -58,6 +60,8 @@ function TaskDetailForm({ task, addTask, saveTask, markComplete, goBack, categor
       saveTask(currentTask);
     } else {
       addTask({ ...currentTask, id: Date.now() });
+      setSelectedTaskId(null);
+      navigate("/");
     }
     setHasChanges(false);
   };
@@ -65,6 +69,15 @@ function TaskDetailForm({ task, addTask, saveTask, markComplete, goBack, categor
   const handleMarkComplete = () => {
     markComplete(currentTask.id);
   };
+
+  const goBack = () => {
+    if (hasChanges) {
+      alert('Please save changes before leaving.');
+    } else {
+      setSelectedTaskId(null);
+      navigate("/");
+    }
+  }
 
   const removeTag = (e) => {
     setCurrentTask({...currentTask, tags : currentTask.tags.filter(n=>n != e.target.value)});
@@ -130,8 +143,8 @@ function TaskDetailForm({ task, addTask, saveTask, markComplete, goBack, categor
     function drawNewTagButton()
     {
       return (
-        <div>
-          <button key={-1} onClick={()=>setDrawTagSelector(true)}>+</button>
+        <div key={-1}>
+          <button onClick={()=>setDrawTagSelector(true)}>+</button>
         </div>
       )
     }
@@ -154,7 +167,7 @@ function TaskDetailForm({ task, addTask, saveTask, markComplete, goBack, categor
 
     let jsx = [];
 
-    jsx.push(<div>Tags:</div>)
+    jsx.push(<div key={-2}>Tags:</div>)
     jsx.push(drawTagSelector? drawSelector() : drawNewTagButton());
 
     for (let i = 0; i < currentTask.tags.length; i++)

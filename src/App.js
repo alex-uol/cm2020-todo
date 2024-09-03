@@ -1,22 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import NavBar from './NavBar';
 import TaskList from './TaskList';
 import TaskDetailForm from './TaskDetailForm';
 
 import { CategoryManager } from './CategoryManager';
 import { Status, Task } from './Task';
 import { Category, Tag } from './Category';
-import { TagManager } from './TagManager';
-
-import DataManagement from './DataManagement';
+import { TagManager } from './TagManager.js';
+import DataManagement from './DataManagement'
 import ResetApp from './ResetApp';
-
-
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Layout } from './Layout.js';
 
 function App() {
   const [tasks, setTasks] = useState([]);
   const [selectedTaskId, setSelectedTaskId] = useState(null);
-  const [context, setContext] = useState('list');
   const [categories, setCategories] = useState([]);
   const [tags, setTags] = useState([]);
 
@@ -41,18 +38,6 @@ function App() {
 
   const addTask = (task) => {
     saveTasks([...tasks, { ...task, status: Status.active, id: Date.now() }]);
-    if (task.category != -1)
-    {
-      let cat = categories.find((e)=>e.id == task.category);
-      cat = {...cat, tasks: [...cat.tasks, task.id]};
-      updateCategory(cat);
-    }
-    setContext('list');
-  };
-
-  const selectTask = (id) => {
-    setSelectedTaskId(id);
-    setContext('detail');
   };
 
   const saveTask = (updatedTask) => {
@@ -184,63 +169,67 @@ function App() {
       }
     }
     saveTasks(_tasks);
-    const newTags = categories.filter(e => e.id !== tag.id); 
+    const newTags = tags.filter(e => e.id !== tag.id); 
     saveTags(newTags); 
   }
 
   return (
-    <div className="app">
-      <NavBar setContext={setContext} />
-      <div className="main-content">
-        {context === 'list' && (
-          <TaskList 
-            tasks={tasks} 
-            selectTask={selectTask} 
-            moveToTrash={moveToTrash} 
-            markComplete={markComplete} 
-            restoreTask={restoreTask} 
-            deleteTaskPermanently={deleteTaskPermanently} 
-            categories={categories}
-            tags={tags}
-          />
-        )}
-        {(context === 'create' || (context === 'detail' && selectedTask)) && (
-          <TaskDetailForm
-            task={context === 'create' ? null : selectedTask}
-            addTask={addTask}
-            saveTask={saveTask}
-            markComplete={markComplete}
-            goBack={(hasChanges) => {
-              if (hasChanges) {
-                alert('Please save changes before leaving.');
-              } else {
-                setContext('list');
-              }
-            }}
-            categories={categories}
-            tags={tags}
-          />
-        )}
-        {context === 'categorieManager' && (
-          <CategoryManager 
-            categories={categories} 
-            updateCategory={updateCategory} 
-            createCategory={createCategory}
-            deleteCategory={deleteCategory}
-          />
-        )}
-        {context === 'tagManager' && (
-          <TagManager 
-            tags={tags} 
-            updateTag={updateTag} 
-            createTag={createTag}
-            deleteTag={deleteTag}
-          />
-        )}
-        {context === "dataManagement" && <DataManagement onImport={loadData} />}
-        {context === "resetApp" && <ResetApp setTasks={setTasks} setCategories={setCategories} setTags={setTags}/>}
-      </div>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Layout/>}>
+          <Route index element={
+            <TaskList 
+              tasks={tasks} 
+              setSelectedTaskId={setSelectedTaskId} 
+              moveToTrash={moveToTrash} 
+              markComplete={markComplete} 
+              restoreTask={restoreTask} 
+              deleteTaskPermanently={deleteTaskPermanently} 
+              categories={categories}
+              tags={tags}
+            />
+          }/>
+          <Route path="/task" element={
+            <TaskDetailForm
+              task={selectedTask? selectedTask : null}
+              addTask={addTask}
+              saveTask={saveTask}
+              markComplete={markComplete}
+              categories={categories}
+              tags={tags}
+              setSelectedTaskId={setSelectedTaskId}
+            />
+            
+          }/>
+          <Route path="/categoryManager" element={
+            <CategoryManager 
+              categories={categories} 
+              updateCategory={updateCategory} 
+              createCategory={createCategory}
+              deleteCategory={deleteCategory}
+            />
+          }/>
+          <Route path="/tagManager" element={
+            <TagManager 
+              tags={tags} 
+              updateTag={updateTag} 
+              createTag={createTag}
+              deleteTag={deleteTag}
+            />
+          }/>
+          <Route path="/dataManagement" element={
+            <DataManagement onImport={loadData} />
+          }/>
+          <Route path="/resetApp" element={
+            <ResetApp
+              setTasks={setTasks}
+              setCategories={setCategories}
+              setTags={setTags}
+            />
+          }/>
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
 

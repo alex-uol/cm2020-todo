@@ -1,6 +1,7 @@
 import React, { useState }  from 'react';
 import { Status, Task, Priority } from './Task';
 import { Category, Tag } from './Category';
+import { useNavigate } from "react-router-dom";
 
 import SearchBox from './SearchBox';
 import TaskItem from './TaskItem';
@@ -19,7 +20,7 @@ import TaskItem from './TaskItem';
  */
 function TaskList({ 
   tasks, 
-  selectTask, 
+  setSelectedTaskId, 
   moveToTrash, 
   markComplete, 
   restoreTask, 
@@ -28,6 +29,10 @@ function TaskList({
   tags 
 }) {
   const [searchValue, setSearchValue] = useState("");
+  const [isSearching, setIsSeaching] = useState(false);
+  const navigate = useNavigate();
+  /**now time for comparing with due date of tasks*/
+  const today = new Date().toISOString().split('T')[0];
   const [sortOption, setSortOption] = useState("unsorted");
   const [filterStatus, setFilterStatus] = useState('all');
 
@@ -41,6 +46,17 @@ function TaskList({
     return matchesStatus && matchesSearch;
   });
 
+  /** select a task and navigate to task editing page
+   * @param {Task} task 
+   */
+  const selectTask = (task) => {
+    if (task.status !== Status.trashed)
+    {
+      setSelectedTaskId(task.id);
+      navigate("/task");
+    }
+  }
+
   /** render the tasklist */
   const renderTasks = (tasks) => {
     return (
@@ -49,7 +65,7 @@ function TaskList({
           <TaskItem
             key={task.id}
             task={task}
-            selectTask={selectTask}
+            selectTask={()=>selectTask(task)}
             markComplete={markComplete}
             restoreTask={restoreTask}
             moveToTrash={moveToTrash}
@@ -62,6 +78,7 @@ function TaskList({
   };
 
   const heading = filterStatus === 'all' ? 'All Tasks' : filterStatus + ' Tasks';
+
 
   const sortedTasks = () => {
     switch (sortOption) {
@@ -92,6 +109,7 @@ function TaskList({
       );
     });
   };
+
 
   // Function to render grouped tasks by priority
   const renderTasksByPriority = (tasksByPriority) => {
