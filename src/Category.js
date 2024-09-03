@@ -11,11 +11,6 @@ export class Category
          * @type {string}
          */
         this.title = title;
-        /** list of id of tasks belongs to this category
-         * @type {number[]}
-         * @deprecated category no longer stores id of tasks
-         */
-        this.tasks = [];
     }
 }
 
@@ -36,11 +31,5 @@ export class Tag
          * @type {string}
         */
         this.colour = "#aaaaaa";
-
-        /** list of id of tasks with this tag
-         * @type {number[]}
-         * @deprecated tag no longer stores id of tasks
-         */
-        this.tasks = [];
     }
 }

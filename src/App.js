@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import NavBar from './NavBar';
 import TaskList from './TaskList';
 import TaskDetailForm from './TaskDetailForm';
 
@@ -15,8 +14,6 @@ import { Layout } from './Layout.js';
 function App() {
   const [tasks, setTasks] = useState([]);
   const [selectedTaskId, setSelectedTaskId] = useState(null);
-  /**@deprecated use useNavigate to navigate to another page*/
-  const [context, setContext] = useState('list');
   const [categories, setCategories] = useState([]);
   const [tags, setTags] = useState([]);
 
@@ -41,7 +38,6 @@ function App() {
 
   const addTask = (task) => {
     saveTasks([...tasks, { ...task, status: Status.active, id: Date.now() }]);
-    //setContext('list');
   };
 
   const saveTask = (updatedTask) => {
@@ -166,7 +162,6 @@ function App() {
     {
       for (let j = 0; j < _tasks[i].tags.length; j++)
       {
-        console.log(_tasks[i].tags[j].toString() + "==?" + tag.id.toString());
         if (_tasks[i].tags[j].toString() == tag.id.toString())
         {
           _tasks[i].tags.splice(j, 1);
@@ -196,7 +191,7 @@ function App() {
           }/>
           <Route path="/task" element={
             <TaskDetailForm
-              task={selectedTask? selectedTask : null /*context === 'create' ? null : selectedTask*/}
+              task={selectedTask? selectedTask : null}
               addTask={addTask}
               saveTask={saveTask}
               markComplete={markComplete}
