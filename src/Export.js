@@ -49,7 +49,7 @@ export default function Export() {
         {!complete ? (
           <button onClick={onClick}>Export Data</button>
         ) : (
-          <span className="success">Export complete!</span>
+          <span className="label-success">Export complete!</span>
         )}
       </div>
 

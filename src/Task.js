@@ -55,14 +55,14 @@ export class Task
         this.title = title;
         /**@type {string}*/
         this.description = description;
-        /**unused property, use status instead 
-         * @type {boolean}
-        */
-        this.completed = false;
         /**list of sub task object 
          * @type {SubTask[]}
         */
         this.subTasks = [];
+        /**progress rate, 0~100
+         * @type {number}
+         */
+        this.progress = 0;
         /**due date in time format string 
          * @type {string}
         */

@@ -11,10 +11,6 @@ export class Category
          * @type {string}
          */
         this.title = title;
-        /** list of id of tasks belongs to this category
-         * @type {number[]}
-         */
-        this.tasks = [];
     }
 }
 
@@ -34,10 +30,6 @@ export class Tag
         /**hexadecimal value of colour of tag 
          * @type {string}
         */
-        this.colour = "#000000";
-        /** list of id of tasks with this tag
-         * @type {number[]}
-         */
-        this.tasks = [];
+        this.colour = "#aaaaaa";
     }
 }

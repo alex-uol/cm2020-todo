@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import NavBar from './NavBar';
 import TaskList from './TaskList';
 import TaskDetailForm from './TaskDetailForm';
 
@@ -8,16 +7,13 @@ import { Status, Task } from './Task';
 import { Category, Tag } from './Category';
 import { TagManager } from './TagManager.js';
 import DataManagement from './DataManagement'
+import ResetApp from './ResetApp';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Layout } from './Layout.js';
-
 
 function App() {
   const [tasks, setTasks] = useState([]);
   const [selectedTaskId, setSelectedTaskId] = useState(null);
-  /**@deprecated use useNavigate to navigate to another page*/
-  const [context, setContext] = useState('list');
-  const [filterStatus, setFilterStatus] = useState('all');
   const [categories, setCategories] = useState([]);
   const [tags, setTags] = useState([]);
 
@@ -42,18 +38,6 @@ function App() {
 
   const addTask = (task) => {
     saveTasks([...tasks, { ...task, status: Status.active, id: Date.now() }]);
-    if (task.category != -1)
-    {
-      let cat = categories.find((e)=>e.id == task.category);
-      cat = {...cat, tasks: [...cat.tasks, task.id]};
-      updateCategory(cat);
-    }
-    //setContext('list');
-  };
-
-  const selectTask = (id) => {
-    setSelectedTaskId(id);
-    //setContext('detail');
   };
 
   const saveTask = (updatedTask) => {
@@ -96,11 +80,13 @@ function App() {
     localStorage.setItem('categories', JSON.stringify(categories));
     setCategories(categories);
   }
+
   /**insert a new category into list 
    * @param {Category} category 
   */
   const createCategory = (category) =>
   {
+    //saveCategories([...categories, { ...category, id: parseInt(categories.length)}]);
     let newId = 0;
     for (let i = 0; i < categories.length; i++)
     {
@@ -111,6 +97,7 @@ function App() {
     }
     saveCategories([...categories, { ...category, id: newId}]);
   }
+
   /**update information of a category in list 
    * @param {Category} category 
   */
@@ -119,6 +106,7 @@ function App() {
     const newCategories = categories.map(e => e.id.toString() == category.id.toString() ? category : e);
     saveCategories(newCategories);
   }
+
   /**delete a category from list, removes(not delete) all tasks in the category
    * @param {Category} category 
   */
@@ -138,6 +126,7 @@ function App() {
     localStorage.setItem('tags', JSON.stringify(tags));
     setTags(tags);
   }
+
   /**insert a new tag into list 
    * @param {Tag} tag
   */
@@ -153,6 +142,7 @@ function App() {
     }
     saveTags([...tags, { ...tag, id: newId}]);
   }
+
   /**update information of a tag in list 
    * @param {Tag} tag
   */
@@ -161,6 +151,7 @@ function App() {
     const newTags = tags.map(e => e.id.toString() == tag.id.toString() ? tag : e);
     saveTags(newTags);
   }
+
   /**delete a tag from list, removes this tag for all tasks with it 
    * @param {Tag} tag
   */
@@ -178,7 +169,7 @@ function App() {
       }
     }
     saveTasks(_tasks);
-    const newTags = categories.filter(e => e.id !== tag.id); 
+    const newTags = tags.filter(e => e.id !== tag.id); 
     saveTags(newTags); 
   }
 
@@ -189,20 +180,18 @@ function App() {
           <Route index element={
             <TaskList 
               tasks={tasks} 
-              selectTask={selectTask} 
+              setSelectedTaskId={setSelectedTaskId} 
               moveToTrash={moveToTrash} 
               markComplete={markComplete} 
               restoreTask={restoreTask} 
               deleteTaskPermanently={deleteTaskPermanently} 
-              filterStatus={filterStatus} 
-              setFilterStatus={setFilterStatus} 
               categories={categories}
               tags={tags}
             />
           }/>
           <Route path="/task" element={
             <TaskDetailForm
-              task={selectedTask? selectedTask : null /*context === 'create' ? null : selectedTask*/}
+              task={selectedTask? selectedTask : null}
               addTask={addTask}
               saveTask={saveTask}
               markComplete={markComplete}
@@ -210,8 +199,9 @@ function App() {
               tags={tags}
               setSelectedTaskId={setSelectedTaskId}
             />
+            
           }/>
-          <Route path="/categorieManager" element={
+          <Route path="/categoryManager" element={
             <CategoryManager 
               categories={categories} 
               updateCategory={updateCategory} 
@@ -229,6 +219,13 @@ function App() {
           }/>
           <Route path="/dataManagement" element={
             <DataManagement onImport={loadData} />
+          }/>
+          <Route path="/resetApp" element={
+            <ResetApp
+              setTasks={setTasks}
+              setCategories={setCategories}
+              setTags={setTags}
+            />
           }/>
         </Route>
       </Routes>
