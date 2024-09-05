@@ -52,13 +52,23 @@ export function TagManager({ tags, updateTag, createTag, deleteTag }) {
     setEditingTag(null);
   };
 
+  const handleDeleteTag = (tag) => {
+    const msg = "You are going to delete tag " + tag.name +
+    ".\r\nThis will remove it form all tasks with this tag. " +
+    "\r\nAre you willing to do this?";
+    if (window.confirm(msg))
+    {
+      deleteTag(tag);
+    }
+  }
+
   const renderTagItem = (tag) => (
     <div className="list-item" key={tag.id}>
       {/* Render a tag using TaskTags Component, change the tag.id to Array */}
       <TaskTags tags={tags} tagIds={[tag.id]} />
       <div>
         <button onClick={() => handleEditTag(tag)}>Edit</button>
-        <button className="warning" onClick={() => deleteTag(tag)}>Delete</button>
+        <button className="warning" onClick={() => handleDeleteTag(tag)}>Delete</button>
       </div>
     </div>
   );

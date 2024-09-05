@@ -201,6 +201,11 @@ input {
 	border-radius: 5px;
 }
 
+input[type="range"] {
+	border: none;
+	padding: 0;
+}
+
 /* Labels */
 
 .label-warning, .label-success, .label-error {

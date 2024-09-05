@@ -51,12 +51,22 @@ export function CategoryManager({ categories, updateCategory, createCategory, de
     setEditingCategory(null);
   };
 
+  const handleDeleteCategory = (category) => {
+    const msg = "You are going to delete category " + category.title +
+    ".\r\nThis will reset category field for all tasks in this category." +
+    "\r\nAre you willing to do this?";
+    if (window.confirm(msg))
+    {
+      deleteCategory(category);
+    }
+  }
+
   const renderCategoryItem = (category) => (
     <div className="list-item" key={category.id}>
       <div><strong>{"*" + category.title}</strong></div>
       <div>
         <button onClick={() => handleEditCategory(category)}>Edit</button>
-        <button className="warning" onClick={() => deleteCategory(category)}>Delete</button>
+        <button className="warning" onClick={() => handleDeleteCategory(category)}>Delete</button>
       </div>
     </div>
   );

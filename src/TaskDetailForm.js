@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Task, SubTask, Priority } from './Task';
+import { Task, SubTask, Priority, Status } from './Task';
 import { Category, Tag } from './Category';
 import { useNavigate } from 'react-router-dom';
 import TaskTags from './TaskTags';
@@ -56,22 +56,24 @@ function TaskDetailForm({ task, addTask, saveTask, markComplete, categories, tag
       alert('Title is required.');
       return;
     }
+    setHasChanges(false);
     if (currentTask.id) {
       saveTask(currentTask);
     } else {
       addTask({ ...currentTask, id: Date.now() });
-      setSelectedTaskId(null);
-      navigate("/");
     }
-    setHasChanges(false);
+    goBack(false);
   };
 
   const handleMarkComplete = () => {
     markComplete(currentTask.id);
   };
 
-  const goBack = () => {
-    if (hasChanges) {
+  /** returns to index page
+   * @param {boolean} checkChanges whether check for changes or not
+   */
+  const goBack = (checkChanges = true) => {
+    if (hasChanges && checkChanges) {
       alert('Please save changes before leaving.');
     } else {
       setSelectedTaskId(null);
@@ -95,6 +97,12 @@ function TaskDetailForm({ task, addTask, saveTask, markComplete, categories, tag
     }
     setCurrentTask({...currentTask, tags : [...currentTask.tags, _id]});
     setDrawTagSelector(false);
+  }
+
+  const onProgressChanged = (e) => {
+    let _status = e.target.value == 100? Status.completed : Status.active;
+    setCurrentTask({...currentTask, progress: e.target.value, status: _status});
+    setHasChanges(true);
   }
 
   function drawCategorieSelector()
@@ -211,6 +219,15 @@ function TaskDetailForm({ task, addTask, saveTask, markComplete, categories, tag
         name="dueDate"
         value={currentTask.dueDate}
         onChange={handleChange}
+      />
+      <p className="task-detail-form-task-progress">Progress rate</p>
+      <input
+        type="range"
+        min="0"
+        max="100"
+        name="progress"
+        value={currentTask.progress}
+        onChange={onProgressChanged}
       />
       <div>
         <label>Priority:</label>

@@ -14,7 +14,7 @@ export const Layout = () => {
             <NavLink to="/">All Tasks</NavLink>
           </li>
           <li>
-            <NavLink to="/task">Create Task</NavLink>
+            <NavLink to="/newtask">Create Task</NavLink>
           </li>
           <li>
             <NavLink to="/categoryManager">Categorie Manager</NavLink>
