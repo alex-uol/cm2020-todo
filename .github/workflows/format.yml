@@ -1,0 +1,27 @@
+name: Format Code
+
+# Executes on all branches except main
+on:
+  push:
+    branches-ignore:
+      - main
+
+# Run Prettier to format the code
+# Commit and push changes if detected
+jobs:
+  format:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Check out the source code"
+        uses: actions/checkout@v4
+      - name: "Setup Node.JS"
+        uses: actions/setup-node@v4
+      - name: "Install all app packages"
+        run: npm install
+      - name: "Run Prettier to format code"
+        run: npx prettier --write .
+      - name: "Push changes"
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git diff --exit-code || git commit -am "chore: Code format" && git push
