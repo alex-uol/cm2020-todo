@@ -56,23 +56,24 @@ function TaskDetailForm({ task, addTask, saveTask, markComplete, categories, tag
       alert('Title is required.');
       return;
     }
+    setHasChanges(false);
     if (currentTask.id) {
       saveTask(currentTask);
     } else {
       addTask({ ...currentTask, id: Date.now() });
-      setSelectedTaskId(null);
-      navigate("/");
     }
-    setHasChanges(false);
-    goBack();
+    goBack(false);
   };
 
   const handleMarkComplete = () => {
     markComplete(currentTask.id);
   };
 
-  const goBack = () => {
-    if (hasChanges) {
+  /** returns to index page
+   * @param {boolean} checkChanges whether check for changes or not
+   */
+  const goBack = (checkChanges = true) => {
+    if (hasChanges && checkChanges) {
       alert('Please save changes before leaving.');
     } else {
       setSelectedTaskId(null);

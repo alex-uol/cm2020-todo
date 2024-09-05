@@ -189,6 +189,17 @@ function App() {
               tags={tags}
             />
           }/>
+          <Route path="/newtask" element={
+            <TaskDetailForm
+              task={null}
+              addTask={addTask}
+              saveTask={saveTask}
+              markComplete={markComplete}
+              categories={categories}
+              tags={tags}
+              setSelectedTaskId={setSelectedTaskId}
+            />
+          }/>
           <Route path="/task" element={
             <TaskDetailForm
               task={selectedTask? selectedTask : null}
@@ -199,7 +210,6 @@ function App() {
               tags={tags}
               setSelectedTaskId={setSelectedTaskId}
             />
-            
           }/>
           <Route path="/categoryManager" element={
             <CategoryManager 
