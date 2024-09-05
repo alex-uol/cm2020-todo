@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { Tag } from './Category';
-import SearchBox from './SearchBox';
-import TaskTags from './TaskTags';
+import React, { useState } from "react";
+import { Tag } from "./Category";
+import SearchBox from "./SearchBox";
+import TaskTags from "./TaskTags";
 
 /**
  * TagManager Component
@@ -25,8 +25,8 @@ export function TagManager({ tags, updateTag, createTag, deleteTag }) {
 
   const filteredTags = !searchValue
     ? tags
-    : tags.filter(tag =>
-        tag.name.toLowerCase().includes(searchValue.toLowerCase())
+    : tags.filter((tag) =>
+        tag.name.toLowerCase().includes(searchValue.toLowerCase()),
       );
 
   const handleEditTag = (tag) => {
@@ -35,7 +35,7 @@ export function TagManager({ tags, updateTag, createTag, deleteTag }) {
 
   const handleSaveTag = (tag) => {
     if (!tag.name.trim()) {
-      alert('Name of a tag cannot be empty.');
+      alert("Name of a tag cannot be empty.");
       return;
     }
 
@@ -53,14 +53,15 @@ export function TagManager({ tags, updateTag, createTag, deleteTag }) {
   };
 
   const handleDeleteTag = (tag) => {
-    const msg = "You are going to delete tag " + tag.name +
-    ".\r\nThis will remove it form all tasks with this tag. " +
-    "\r\nAre you willing to do this?";
-    if (window.confirm(msg))
-    {
+    const msg =
+      "You are going to delete tag " +
+      tag.name +
+      ".\r\nThis will remove it form all tasks with this tag. " +
+      "\r\nAre you willing to do this?";
+    if (window.confirm(msg)) {
       deleteTag(tag);
     }
-  }
+  };
 
   const renderTagItem = (tag) => (
     <div className="list-item" key={tag.id}>
@@ -68,7 +69,9 @@ export function TagManager({ tags, updateTag, createTag, deleteTag }) {
       <TaskTags tags={tags} tagIds={[tag.id]} />
       <div>
         <button onClick={() => handleEditTag(tag)}>Edit</button>
-        <button className="warning" onClick={() => handleDeleteTag(tag)}>Delete</button>
+        <button className="warning" onClick={() => handleDeleteTag(tag)}>
+          Delete
+        </button>
       </div>
     </div>
   );
@@ -85,7 +88,9 @@ export function TagManager({ tags, updateTag, createTag, deleteTag }) {
         type="color"
         name="colour"
         value={editingTag.colour}
-        onChange={(e) => setEditingTag({ ...editingTag, colour: e.target.value })}
+        onChange={(e) =>
+          setEditingTag({ ...editingTag, colour: e.target.value })
+        }
       />
       <div>
         <button onClick={handleCancelEdit}>Cancel</button>
@@ -102,17 +107,22 @@ export function TagManager({ tags, updateTag, createTag, deleteTag }) {
     <div className="tag-manager">
       <div className="header-container">
         <h2>Tag Manager</h2>
-        <SearchBox searchValue={searchValue} setSearchValue={handleSearchChange} />
+        <SearchBox
+          searchValue={searchValue}
+          setSearchValue={handleSearchChange}
+        />
       </div>
       <div>
-        <button onClick={handleNewTag} disabled={!!editingTag}>+ New Tag</button>
+        <button onClick={handleNewTag} disabled={!!editingTag}>
+          + New Tag
+        </button>
       </div>
       <div>
         {editingTag && editingTag.id === -1 && renderEditingTag()}
         {filteredTags.map((tag) =>
           editingTag && editingTag.id === tag.id
             ? renderEditingTag()
-            : renderTagItem(tag)
+            : renderTagItem(tag),
         )}
       </div>
     </div>
