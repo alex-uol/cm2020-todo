@@ -1,10 +1,10 @@
 // TaskListFilter.js
-import React from 'react';
+import React from "react";
 
 /**
  * TaskListFilter Component
  * Renders buttons for filtering the task list by status.
- * 
+ *
  * @param {Object} props
  * @param {Function} props.setFilterStatus - Function to set the filter status.
  * @returns {JSX.Element} A rendered filter buttons component.

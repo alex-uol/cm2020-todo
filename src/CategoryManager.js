@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { Category } from './Category';
-import SearchBox from './SearchBox';
+import React, { useState } from "react";
+import { Category } from "./Category";
+import SearchBox from "./SearchBox";
 
 /**
  * CategoryManager Component
@@ -13,7 +13,12 @@ import SearchBox from './SearchBox';
  * @param {Function} props.deleteCategory - Function to delete a category.
  * @returns {React.JSX.Element}
  */
-export function CategoryManager({ categories, updateCategory, createCategory, deleteCategory }) {
+export function CategoryManager({
+  categories,
+  updateCategory,
+  createCategory,
+  deleteCategory,
+}) {
   const [editingCategory, setEditingCategory] = useState(null);
   const [searchValue, setSearchValue] = useState("");
 
@@ -24,8 +29,8 @@ export function CategoryManager({ categories, updateCategory, createCategory, de
 
   const filteredCategories = !searchValue
     ? categories
-    : categories.filter(category =>
-        category.title.toLowerCase().includes(searchValue.toLowerCase())
+    : categories.filter((category) =>
+        category.title.toLowerCase().includes(searchValue.toLowerCase()),
       );
 
   const handleEditCategory = (category) => {
@@ -34,7 +39,7 @@ export function CategoryManager({ categories, updateCategory, createCategory, de
 
   const handleSaveCategory = (category) => {
     if (!category.title.trim()) {
-      alert('Title of a category cannot be empty.');
+      alert("Title of a category cannot be empty.");
       return;
     }
 
@@ -52,21 +57,29 @@ export function CategoryManager({ categories, updateCategory, createCategory, de
   };
 
   const handleDeleteCategory = (category) => {
-    const msg = "You are going to delete category " + category.title +
-    ".\r\nThis will reset category field for all tasks in this category." +
-    "\r\nAre you willing to do this?";
-    if (window.confirm(msg))
-    {
+    const msg =
+      "You are going to delete category " +
+      category.title +
+      ".\r\nThis will reset category field for all tasks in this category." +
+      "\r\nAre you willing to do this?";
+    if (window.confirm(msg)) {
       deleteCategory(category);
     }
-  }
+  };
 
   const renderCategoryItem = (category) => (
     <div className="list-item" key={category.id}>
-      <div><strong>{"*" + category.title}</strong></div>
+      <div>
+        <strong>{"*" + category.title}</strong>
+      </div>
       <div>
         <button onClick={() => handleEditCategory(category)}>Edit</button>
-        <button className="warning" onClick={() => handleDeleteCategory(category)}>Delete</button>
+        <button
+          className="warning"
+          onClick={() => handleDeleteCategory(category)}
+        >
+          Delete
+        </button>
       </div>
     </div>
   );
@@ -77,11 +90,15 @@ export function CategoryManager({ categories, updateCategory, createCategory, de
         type="text"
         name="title"
         value={editingCategory.title}
-        onChange={(e) => setEditingCategory({ ...editingCategory, title: e.target.value })}
+        onChange={(e) =>
+          setEditingCategory({ ...editingCategory, title: e.target.value })
+        }
       />
       <div>
         <button onClick={handleCancelEdit}>Cancel</button>
-        <button onClick={() => handleSaveCategory(editingCategory)}>Save</button>
+        <button onClick={() => handleSaveCategory(editingCategory)}>
+          Save
+        </button>
       </div>
     </div>
   );
@@ -94,17 +111,24 @@ export function CategoryManager({ categories, updateCategory, createCategory, de
     <div className="category-manager">
       <div className="header-container">
         <h2>Category Manager</h2>
-        <SearchBox searchValue={searchValue} setSearchValue={handleSearchChange} />
+        <SearchBox
+          searchValue={searchValue}
+          setSearchValue={handleSearchChange}
+        />
       </div>
       <div>
-        <button onClick={handleNewCategory} disabled={!!editingCategory}>+ New Category</button>
+        <button onClick={handleNewCategory} disabled={!!editingCategory}>
+          + New Category
+        </button>
       </div>
       <div>
-        {editingCategory && editingCategory.id === -1 && renderEditingCategory()}
+        {editingCategory &&
+          editingCategory.id === -1 &&
+          renderEditingCategory()}
         {filteredCategories.map((category) =>
           editingCategory && editingCategory.id === category.id
             ? renderEditingCategory()
-            : renderCategoryItem(category)
+            : renderCategoryItem(category),
         )}
       </div>
     </div>

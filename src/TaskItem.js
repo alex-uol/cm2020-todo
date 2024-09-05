@@ -1,12 +1,12 @@
-import React from 'react';
-import { Status } from './Task';
-import SubTaskList from './SubTaskList';
-import TaskTags from './TaskTags';
+import React from "react";
+import { Status } from "./Task";
+import SubTaskList from "./SubTaskList";
+import TaskTags from "./TaskTags";
 
 /**
  * TaskItem Component
  * Renders a single task with its details, tags, and action buttons.
- * 
+ *
  * @param {Object} props
  * @param {Object} props.task - The task object to render.
  * @param {Function} props.selectTask - Function to select a task for editing.
@@ -17,22 +17,29 @@ import TaskTags from './TaskTags';
  * @param {Object[]} props.tags - List of all tags to render associated tags.
  * @returns {JSX.Element} A rendered task item.
  */
-const TaskItem = ({ task, selectTask, markComplete, restoreTask, moveToTrash, deleteTaskPermanently, tags }) => {
-
+const TaskItem = ({
+  task,
+  selectTask,
+  markComplete,
+  restoreTask,
+  moveToTrash,
+  deleteTaskPermanently,
+  tags,
+}) => {
   /**now time for comparing with due date of tasks*/
-  const today = new Date().toISOString().split('T')[0];
+  const today = new Date().toISOString().split("T")[0];
 
-   /**calculate remaining time from due date 
+  /**calculate remaining time from due date
    * @param {string} dueDate due date of task
    * @returns {string} remaining time in plain text from
-  */
+   */
   const calculateRemainingTime = (dueDate) => {
-    
     const due = new Date(dueDate);
-    const now = new Date();today
+    const now = new Date();
+    today;
     const diffMs = due - now;
 
-    if (diffMs <= 0) return 'Overdue';
+    if (diffMs <= 0) return "Overdue";
     const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
     if (diffDays > 0) return `${diffDays} day(s) remaining`;
 
@@ -55,22 +62,36 @@ const TaskItem = ({ task, selectTask, markComplete, restoreTask, moveToTrash, de
 
   return (
     <li className={getClassName()} key={task.id}>
-      <div onClick={() => task.status !== Status.trashed && selectTask(task.id)}>
+      <div
+        onClick={() => task.status !== Status.trashed && selectTask(task.id)}
+      >
         <strong>{task.title}</strong> - {task.description}
         <div>Priority: {task.priority}</div>
-        <div>Due Date: {task.dueDate ? task.dueDate : "Not yet set"} {task.dueDate ? calculateRemainingTime(task.dueDate) : ""}</div>
+        <div>
+          Due Date: {task.dueDate ? task.dueDate : "Not yet set"}{" "}
+          {task.dueDate ? calculateRemainingTime(task.dueDate) : ""}
+        </div>
         <div>Status: {task.status}</div>
-
         <SubTaskList subTasks={task.subTasks} />
       </div>
 
       <TaskTags tags={tags} tagIds={task.tags} />
-      
+
       <div>
-        {task.status === Status.active && <button onClick={() => markComplete(task.id)}>Mark Completed</button>}
-        {task.status === Status.completed && <button onClick={() => restoreTask(task.id)}>Mark Uncomplete</button>}
-        {task.status !== Status.trashed && <button onClick={() => moveToTrash(task.id)}>Delete</button>}
-        {task.status === Status.trashed && <button onClick={() => deleteTaskPermanently(task.id)}>Delete Permanently</button>}
+        {task.status === Status.active && (
+          <button onClick={() => markComplete(task.id)}>Mark Completed</button>
+        )}
+        {task.status === Status.completed && (
+          <button onClick={() => restoreTask(task.id)}>Mark Uncomplete</button>
+        )}
+        {task.status !== Status.trashed && (
+          <button onClick={() => moveToTrash(task.id)}>Delete</button>
+        )}
+        {task.status === Status.trashed && (
+          <button onClick={() => deleteTaskPermanently(task.id)}>
+            Delete Permanently
+          </button>
+        )}
       </div>
     </li>
   );
