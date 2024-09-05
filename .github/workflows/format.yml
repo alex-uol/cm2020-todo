@@ -6,7 +6,12 @@ on:
     branches-ignore:
       - main
 
-# Run Prettier to format the code
+# Allow pushing commits to the repository
+# Necessary to push the formatted code
+permissions:
+  contents: write
+
+# Run Prettier to format all code
 # Commit and push changes if detected
 jobs:
   format:
