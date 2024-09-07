@@ -14,5 +14,5 @@ jobs:
         uses: actions/setup-node@v4
       - name: "Install all app packages"
         run: npm install
-      - name: "Run Prettier to format code"
+      - name: "Run tests"
         run: npm test
