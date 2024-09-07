@@ -22,7 +22,7 @@ describe("Create task", () => {
           categories={[]}
           tags={[]}
         />
-      </Router>
+      </Router>,
     );
   }
 
