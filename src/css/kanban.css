@@ -1,64 +1,62 @@
 .board {
-    display: flex;
-    justify-content: space-around;
-    padding: 20px;
+  display: flex;
+  justify-content: space-around;
+  padding: 20px;
 }
 
 .column-container {
-    width: calc(100% - 30px);
-    max-width: 400px;
-    margin: 10px;
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow:
-        0px 2px 5px;
+  width: calc(100% - 30px);
+  max-width: 400px;
+  margin: 10px;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0px 2px 5px;
 }
 
 .column {
-    padding: 20px;
-    max-width: 400px;
+  padding: 20px;
+  max-width: 400px;
 }
 
 .column h2 {
-    font-size: 18px;
-    margin-bottom: 10px;
+  font-size: 18px;
+  margin-bottom: 10px;
 }
 
 .task-input {
-    width: 60%;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    margin-bottom: 10px;
+  width: 60%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 10px;
 }
 
 .task {
-    padding: 10px;
-    border-radius: 5px;
-    margin-bottom: 10px;
-    cursor: move;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  cursor: move;
 }
 
 .add-task-btn {
-    background-color: #4caf50;
-    border: none;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 14px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
+  background-color: #4caf50;
+  border: none;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
 
 .task {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 5px;
-    margin-bottom: 5px;
-    cursor: move;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 5px;
+  margin-bottom: 5px;
+  cursor: move;
 }
-

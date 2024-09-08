@@ -74,8 +74,8 @@ function App() {
 
   // added updateTaskCategory fn to update tasks category on drag and drop
   const updateTaskCategory = (id, newCategory) => {
-    const updatedTasks = tasks.map(task => 
-      task.id == id ? { ...task, category: newCategory } : task
+    const updatedTasks = tasks.map((task) =>
+      task.id == id ? { ...task, category: newCategory } : task,
     );
     saveTasks(updatedTasks);
   };

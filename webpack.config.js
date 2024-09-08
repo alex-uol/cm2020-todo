@@ -20,9 +20,9 @@ module.exports = {
         },
       },
       // added for css loader
-      { 
+      {
         test: /\.css$/,
-        use: [ 'style-loader', 'css-loader' ]
+        use: ["style-loader", "css-loader"],
       },
       // Add other rules here (e.g., for CSS or images)
     ],
