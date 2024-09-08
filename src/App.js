@@ -168,8 +168,11 @@ function App() {
     saveTags(newTags);
   };
 
+  // Detect basename prefix
+  const basename =
+    location.hostname === "alex-uol.github.io" ? "/todo-app" : "/";
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={basename}>
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route
