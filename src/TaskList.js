@@ -232,18 +232,6 @@ function TaskList({
     return tasksByTag;
   };
 
-  // const sortTasksByPriority = (tasks) => {
-  //   return [...tasks].sort((a, b) => {
-  //     const priorityOrder = [Priority.high, Priority.medium, Priority.low];
-  //     return priorityOrder.indexOf(a.priority) - priorityOrder.indexOf(b.priority);
-  //   });
-  // };
-
-  // Functions to sort tasks by tasks with subtasks
-  // const sortTasksBySubTasks = (tasks) => {
-  //   return tasks.filter(task => task.subTasks.length > 0);
-  // };
-
   return (
     <div className="task-list">
       <div className="header-container">

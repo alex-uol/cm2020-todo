@@ -159,11 +159,6 @@ function TaskDetailForm({
             </button>
           </div>
         </div>
-        // <div key={e.id} className="tag-container">
-        //   <div className="tag-colour-block" style={{backgroundColor: e.colour}}></div>
-        //   <div>{e.name}</div>
-        //   <button className="warning" value={e.id} onClick={removeTag}>Delete</button>
-        // </div>
       );
     }
 
