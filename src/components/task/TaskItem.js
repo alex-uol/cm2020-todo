@@ -1,5 +1,5 @@
 import React from "react";
-import { Status } from "./Task";
+import { Status } from "../../models/Task";
 import SubTaskList from "./SubTaskList";
 import TaskTags from "./TaskTags";
 

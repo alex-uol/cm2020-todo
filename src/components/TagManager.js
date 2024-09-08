@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { Tag } from "./Category";
-import SearchBox from "./SearchBox";
-import TaskTags from "./TaskTags";
+import { Tag } from "../models/Category";
+import SearchBox from "../components/SearchBox";
+import TaskTags from "../components/task/TaskTags";
 
 /**
  * TagManager Component

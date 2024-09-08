@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Task, SubTask, Priority, Status } from "./Task";
-import { Category, Tag } from "./Category";
+import { Task, SubTask, Priority, Status } from "../../models/Task";
+import { Category, Tag } from "../../models/Category";
 import { useNavigate } from "react-router-dom";
 import TaskTags from "./TaskTags";
 

@@ -1,6 +1,6 @@
 import React from "react";
 import { Outlet, NavLink } from "react-router-dom";
-import ColorSelector from "./ColorSelector";
+import ColorSelector from "../components/ColorSelector";
 
 /** Returns a layout template, replaces NavBar
  * @returns {React.JSX.Element}

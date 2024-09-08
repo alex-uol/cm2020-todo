@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
-import TaskList from "./TaskList";
-import TaskDetailForm from "./TaskDetailForm";
+import TaskList from "./components/task/TaskList";
+import TaskDetailForm from "./components/task/TaskDetailForm";
 
-import { CategoryManager } from "./CategoryManager";
-import { Status, Task } from "./Task";
-import { Category, Tag } from "./Category";
-import { TagManager } from "./TagManager.js";
-import DataManagement from "./DataManagement";
-import ResetApp from "./ResetApp";
+import { CategoryManager } from "./components/category/CategoryManager";
+import { Status, Task } from "./models/Task";
+import { Category, Tag } from "./models/Category";
+import { TagManager } from "./components/TagManager.js";
+import DataManagement from "./components/DataManagement.js";
+import ResetApp from "./components/ResetApp.js";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Layout } from "./Layout.js";
+import { Layout } from "./layout/Layout.js";
 
 function App() {
   const [tasks, setTasks] = useState([]);
@@ -70,6 +70,14 @@ function App() {
 
   const deleteTaskPermanently = (id) => {
     saveTasks(tasks.filter((task) => task.id !== id));
+  };
+
+  // added updateTaskCategory fn to update tasks category on drag and drop
+  const updateTaskCategory = (id, newCategory) => {
+    const updatedTasks = tasks.map(task => 
+      task.id == id ? { ...task, category: newCategory } : task
+    );
+    saveTasks(updatedTasks);
   };
 
   const selectedTask = tasks.find((task) => task.id === selectedTaskId);
@@ -220,9 +228,11 @@ function App() {
             element={
               <CategoryManager
                 categories={categories}
+                tasks={tasks}
                 updateCategory={updateCategory}
                 createCategory={createCategory}
                 deleteCategory={deleteCategory}
+                updateTaskCategory={updateTaskCategory}
               />
             }
           />

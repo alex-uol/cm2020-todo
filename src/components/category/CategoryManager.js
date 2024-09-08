@@ -1,6 +1,9 @@
 import React, { useState } from "react";
-import { Category } from "./Category";
-import SearchBox from "./SearchBox";
+import { Category } from "../../models/Category";
+import SearchBox from "../SearchBox";
+import "../../css/tabs.css";
+import { Task } from '../../models/Task';
+import { CategoryKanban } from "./CategoryKanban";
 
 /**
  * CategoryManager Component
@@ -8,16 +11,20 @@ import SearchBox from "./SearchBox";
  *
  * @param {Object} props
  * @param {Category[]} props.categories - List of all categories.
+ * @param {Task[]} props.tasks - List of all tasks.
  * @param {Function} props.updateCategory - Function to update a category.
  * @param {Function} props.createCategory - Function to create a new category.
  * @param {Function} props.deleteCategory - Function to delete a category.
+ * @param {Function} props.updateTaskCategory - Function to delete a category. 
  * @returns {React.JSX.Element}
  */
 export function CategoryManager({
   categories,
+  tasks,
   updateCategory,
   createCategory,
   deleteCategory,
+  updateTaskCategory
 }) {
   const [editingCategory, setEditingCategory] = useState(null);
   const [searchValue, setSearchValue] = useState("");
@@ -107,6 +114,11 @@ export function CategoryManager({
     setEditingCategory(new Category());
   };
 
+  const [currentTab, setCurrentTab] = useState("listView");
+  const setViewValue = (value) => {
+    setCurrentTab(value);
+  }
+
   return (
     <div className="category-manager">
       <div className="header-container">
@@ -116,21 +128,47 @@ export function CategoryManager({
           setSearchValue={handleSearchChange}
         />
       </div>
-      <div>
+      
+      <div style={{marginBottom:"5px"}}>
         <button onClick={handleNewCategory} disabled={!!editingCategory}>
           + New Category
         </button>
       </div>
-      <div>
-        {editingCategory &&
-          editingCategory.id === -1 &&
-          renderEditingCategory()}
-        {filteredCategories.map((category) =>
-          editingCategory && editingCategory.id === category.id
-            ? renderEditingCategory()
-            : renderCategoryItem(category),
-        )}
+
+      <div className="tab">
+        <button className="tab-links" onClick={() => {setViewValue('listView')}}>
+          List
+        </button>
+        <button className="tab-links" onClick={() => {setViewValue('gridView')}}>
+          Grid
+        </button>
       </div>
+
+      <div 
+        id="listView"
+        style={{ display: currentTab == "listView" ? 'block' : 'none' }}
+        className="tab-content">
+        <div>
+          {editingCategory && editingCategory.id === -1 && renderEditingCategory()}
+          {filteredCategories.map((category) =>
+            editingCategory && editingCategory.id === category.id
+              ? renderEditingCategory()
+              : renderCategoryItem(category)
+          )}
+        </div>
+      </div>
+      
+        <div
+          id="gridView" 
+          className="tab-content"
+          style={{ display: currentTab == "gridView" ? 'block' : 'none' }}
+        >
+          <CategoryKanban 
+            categories={categories} 
+            tasks={tasks}
+            updateTaskCategory={updateTaskCategory}
+          />
+        </div>
     </div>
   );
 }

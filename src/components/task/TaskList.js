@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { Status, Task, Priority } from "./Task";
-import { Category, Tag } from "./Category";
+import { Status, Task, Priority } from "../../models/Task";
+import { Category, Tag } from "../../models/Category";
 import { useNavigate } from "react-router-dom";
 
-import SearchBox from "./SearchBox";
+import SearchBox from "../SearchBox";
 import TaskItem from "./TaskItem";
 
 /**
